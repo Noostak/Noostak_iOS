@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		714508FC2D1FDEE800A3D3C2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 714508FB2D1FDEE500A3D3C2 /* .swiftlint.yml */; };
+		DC702FBB2D227F7D007CD63B /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FBA2D227F7D007CD63B /* Then */; };
+		DC702FBE2D227F93007CD63B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FBD2D227F93007CD63B /* SnapKit */; };
+		DC702FC02D227F93007CD63B /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FBF2D227F93007CD63B /* SnapKit-Dynamic */; };
+		DC702FC32D227FCC007CD63B /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FC22D227FCC007CD63B /* Moya */; };
+		DC702FC52D227FCC007CD63B /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FC42D227FCC007CD63B /* RxMoya */; };
+		DC702FC82D227FE6007CD63B /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FC72D227FE6007CD63B /* RxCocoa */; };
+		DC702FCA2D227FE6007CD63B /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FC92D227FE6007CD63B /* RxRelay */; };
+		DC702FCD2D228039007CD63B /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FCC2D228039007CD63B /* Kingfisher */; };
+		DC702FD02D228049007CD63B /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FCF2D228049007CD63B /* ReactorKit */; };
+		DC702FD32D2280AC007CD63B /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FD22D2280AC007CD63B /* RxDataSources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +51,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC702FC82D227FE6007CD63B /* RxCocoa in Frameworks */,
+				DC702FC52D227FCC007CD63B /* RxMoya in Frameworks */,
+				DC702FCA2D227FE6007CD63B /* RxRelay in Frameworks */,
+				DC702FD32D2280AC007CD63B /* RxDataSources in Frameworks */,
+				DC702FBB2D227F7D007CD63B /* Then in Frameworks */,
+				DC702FD02D228049007CD63B /* ReactorKit in Frameworks */,
+				DC702FCD2D228039007CD63B /* Kingfisher in Frameworks */,
+				DC702FBE2D227F93007CD63B /* SnapKit in Frameworks */,
+				DC702FC32D227FCC007CD63B /* Moya in Frameworks */,
+				DC702FC02D227F93007CD63B /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +105,16 @@
 			);
 			name = Noostak_iOS;
 			packageProductDependencies = (
+				DC702FBA2D227F7D007CD63B /* Then */,
+				DC702FBD2D227F93007CD63B /* SnapKit */,
+				DC702FBF2D227F93007CD63B /* SnapKit-Dynamic */,
+				DC702FC22D227FCC007CD63B /* Moya */,
+				DC702FC42D227FCC007CD63B /* RxMoya */,
+				DC702FC72D227FE6007CD63B /* RxCocoa */,
+				DC702FC92D227FE6007CD63B /* RxRelay */,
+				DC702FCC2D228039007CD63B /* Kingfisher */,
+				DC702FCF2D228049007CD63B /* ReactorKit */,
+				DC702FD22D2280AC007CD63B /* RxDataSources */,
 			);
 			productName = Noostak_iOS;
 			productReference = 714508E12D1FDC9B00A3D3C2 /* Noostak_iOS.app */;
@@ -114,6 +144,15 @@
 			);
 			mainGroup = 714508D82D1FDC9B00A3D3C2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				DC702FB92D227F7D007CD63B /* XCRemoteSwiftPackageReference "Then" */,
+				DC702FBC2D227F93007CD63B /* XCRemoteSwiftPackageReference "Snapkit" */,
+				DC702FC12D227FCC007CD63B /* XCRemoteSwiftPackageReference "Moya" */,
+				DC702FC62D227FE6007CD63B /* XCRemoteSwiftPackageReference "RxSwift" */,
+				DC702FCB2D228039007CD63B /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				DC702FCE2D228049007CD63B /* XCRemoteSwiftPackageReference "ReactorKit" */,
+				DC702FD12D2280AC007CD63B /* XCRemoteSwiftPackageReference "RxDataSources" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 714508E22D1FDC9B00A3D3C2 /* Products */;
 			projectDirPath = "";
@@ -375,6 +414,118 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DC702FB92D227F7D007CD63B /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		DC702FBC2D227F93007CD63B /* XCRemoteSwiftPackageReference "Snapkit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Snapkit/Snapkit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		DC702FC12D227FCC007CD63B /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+		DC702FC62D227FE6007CD63B /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.8.0;
+			};
+		};
+		DC702FCB2D228039007CD63B /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.3;
+			};
+		};
+		DC702FCE2D228049007CD63B /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
+		DC702FD12D2280AC007CD63B /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DC702FBA2D227F7D007CD63B /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FB92D227F7D007CD63B /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		DC702FBD2D227F93007CD63B /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FBC2D227F93007CD63B /* XCRemoteSwiftPackageReference "Snapkit" */;
+			productName = SnapKit;
+		};
+		DC702FBF2D227F93007CD63B /* SnapKit-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FBC2D227F93007CD63B /* XCRemoteSwiftPackageReference "Snapkit" */;
+			productName = "SnapKit-Dynamic";
+		};
+		DC702FC22D227FCC007CD63B /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FC12D227FCC007CD63B /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		DC702FC42D227FCC007CD63B /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FC12D227FCC007CD63B /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
+		};
+		DC702FC72D227FE6007CD63B /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FC62D227FE6007CD63B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		DC702FC92D227FE6007CD63B /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FC62D227FE6007CD63B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		DC702FCC2D228039007CD63B /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FCB2D228039007CD63B /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		DC702FCF2D228049007CD63B /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FCE2D228049007CD63B /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
+		};
+		DC702FD22D2280AC007CD63B /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC702FD12D2280AC007CD63B /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 714508D92D1FDC9B00A3D3C2 /* Project object */;
 }
