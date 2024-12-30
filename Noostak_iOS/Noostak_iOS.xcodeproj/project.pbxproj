@@ -29,7 +29,7 @@
 		714508F32D1FDC9C00A3D3C2 /* Exceptions for "Noostak_iOS" folder in "Noostak_iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Global/Resources/Info.plist,
 			);
 			target = 714508E02D1FDC9B00A3D3C2 /* Noostak_iOS */;
 		};
