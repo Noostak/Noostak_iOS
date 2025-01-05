@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		714508FC2D1FDEE800A3D3C2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 714508FB2D1FDEE500A3D3C2 /* .swiftlint.yml */; };
+		DC499B112D2A969D00D890C3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DC499B102D2A969D00D890C3 /* SnapKit */; };
 		DC702FBB2D227F7D007CD63B /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FBA2D227F7D007CD63B /* Then */; };
-		DC702FBE2D227F93007CD63B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FBD2D227F93007CD63B /* SnapKit */; };
-		DC702FC02D227F93007CD63B /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FBF2D227F93007CD63B /* SnapKit-Dynamic */; };
 		DC702FC32D227FCC007CD63B /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FC22D227FCC007CD63B /* Moya */; };
 		DC702FC52D227FCC007CD63B /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FC42D227FCC007CD63B /* RxMoya */; };
 		DC702FC82D227FE6007CD63B /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DC702FC72D227FE6007CD63B /* RxCocoa */; };
@@ -29,7 +28,14 @@
 		714508F32D1FDC9C00A3D3C2 /* Exceptions for "Noostak_iOS" folder in "Noostak_iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Global/Resources/Info.plist,
+				Data/Base/.gitkeep,
+				Data/DTO/.gitkeep,
+				Data/Repository/.gitkeep,
+				Data/Router/.gitkeep,
+				Domain/RepositoryInterface/.gitkeep,
+				Domain/UseCase/.gitkeep,
+				Global/Extension/.gitkeep,
+				Global/Literals/Font/.gitkeep,
 			);
 			target = 714508E02D1FDC9B00A3D3C2 /* Noostak_iOS */;
 		};
@@ -57,10 +63,9 @@
 				DC702FD32D2280AC007CD63B /* RxDataSources in Frameworks */,
 				DC702FBB2D227F7D007CD63B /* Then in Frameworks */,
 				DC702FD02D228049007CD63B /* ReactorKit in Frameworks */,
+				DC499B112D2A969D00D890C3 /* SnapKit in Frameworks */,
 				DC702FCD2D228039007CD63B /* Kingfisher in Frameworks */,
-				DC702FBE2D227F93007CD63B /* SnapKit in Frameworks */,
 				DC702FC32D227FCC007CD63B /* Moya in Frameworks */,
-				DC702FC02D227F93007CD63B /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,8 +111,6 @@
 			name = Noostak_iOS;
 			packageProductDependencies = (
 				DC702FBA2D227F7D007CD63B /* Then */,
-				DC702FBD2D227F93007CD63B /* SnapKit */,
-				DC702FBF2D227F93007CD63B /* SnapKit-Dynamic */,
 				DC702FC22D227FCC007CD63B /* Moya */,
 				DC702FC42D227FCC007CD63B /* RxMoya */,
 				DC702FC72D227FE6007CD63B /* RxCocoa */,
@@ -115,6 +118,7 @@
 				DC702FCC2D228039007CD63B /* Kingfisher */,
 				DC702FCF2D228049007CD63B /* ReactorKit */,
 				DC702FD22D2280AC007CD63B /* RxDataSources */,
+				DC499B102D2A969D00D890C3 /* SnapKit */,
 			);
 			productName = Noostak_iOS;
 			productReference = 714508E12D1FDC9B00A3D3C2 /* Noostak_iOS.app */;
@@ -146,12 +150,12 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				DC702FB92D227F7D007CD63B /* XCRemoteSwiftPackageReference "Then" */,
-				DC702FBC2D227F93007CD63B /* XCRemoteSwiftPackageReference "Snapkit" */,
 				DC702FC12D227FCC007CD63B /* XCRemoteSwiftPackageReference "Moya" */,
 				DC702FC62D227FE6007CD63B /* XCRemoteSwiftPackageReference "RxSwift" */,
 				DC702FCB2D228039007CD63B /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				DC702FCE2D228049007CD63B /* XCRemoteSwiftPackageReference "ReactorKit" */,
 				DC702FD12D2280AC007CD63B /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				DC499B0F2D2A969D00D890C3 /* XCRemoteSwiftPackageReference "Snapkit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 714508E22D1FDC9B00A3D3C2 /* Products */;
@@ -416,20 +420,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DC499B0F2D2A969D00D890C3 /* XCRemoteSwiftPackageReference "Snapkit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Snapkit/Snapkit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 		DC702FB92D227F7D007CD63B /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.0.0;
-			};
-		};
-		DC702FBC2D227F93007CD63B /* XCRemoteSwiftPackageReference "Snapkit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Snapkit/Snapkit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.7.1;
 			};
 		};
 		DC702FC12D227FCC007CD63B /* XCRemoteSwiftPackageReference "Moya" */ = {
@@ -475,20 +479,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DC499B102D2A969D00D890C3 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC499B0F2D2A969D00D890C3 /* XCRemoteSwiftPackageReference "Snapkit" */;
+			productName = SnapKit;
+		};
 		DC702FBA2D227F7D007CD63B /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DC702FB92D227F7D007CD63B /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
-		};
-		DC702FBD2D227F93007CD63B /* SnapKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DC702FBC2D227F93007CD63B /* XCRemoteSwiftPackageReference "Snapkit" */;
-			productName = SnapKit;
-		};
-		DC702FBF2D227F93007CD63B /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DC702FBC2D227F93007CD63B /* XCRemoteSwiftPackageReference "Snapkit" */;
-			productName = "SnapKit-Dynamic";
 		};
 		DC702FC22D227FCC007CD63B /* Moya */ = {
 			isa = XCSwiftPackageProductDependency;
