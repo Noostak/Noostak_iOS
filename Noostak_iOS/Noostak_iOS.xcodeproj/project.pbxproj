@@ -32,7 +32,6 @@
 				Data/DTO/.gitkeep,
 				Data/Repository/.gitkeep,
 				Data/Router/.gitkeep,
-				Domain/Entity/.gitkeep,
 				Domain/RepositoryInterface/.gitkeep,
 				Domain/UseCase/.gitkeep,
 				Global/Extension/.gitkeep,
