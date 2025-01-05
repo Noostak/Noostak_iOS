@@ -5,16 +5,12 @@
 //  Created by 오연서 on 1/5/25.
 //
 
-import UIKit
+import Foundation
 
 enum ScheduleCategory: String {
-    ///중요
     case important
-    ///일정
     case schedule
-    ///취미
     case hobby
-    ///기타
     case other
 }
 
@@ -50,4 +46,20 @@ struct ExtendedSchedule {
     let availableMembers: [User]
     ///불가능한 친구
     let unavailableMembers: [User]
+}
+
+extension ScheduleCategory {
+    /// 한글명 반환
+    var name: String {
+        switch self {
+        case .important:
+            return "중요"
+        case .schedule:
+            return "일정"
+        case .hobby:
+            return "취미"
+        case .other:
+            return "기타"
+        }
+    }
 }

@@ -5,8 +5,6 @@
 //  Created by 오연서 on 1/5/25.
 //
 
-import UIKit
-
 struct Group {
     ///그룹 id
     let id: Int
