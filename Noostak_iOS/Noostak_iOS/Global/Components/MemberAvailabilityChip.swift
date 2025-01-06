@@ -15,7 +15,7 @@ enum MemberStatus {
     case unavailable
 }
 
-class MemberAvailabilityChip: UIView {
+final class MemberAvailabilityChip: UIView {
     
     private let chipLabel = UILabel()
     private var status: MemberStatus = .myself
