@@ -31,6 +31,7 @@ extension String {
 
         let attributes: [NSAttributedString.Key: Any] = [
             .font: font,
+            .foregroundColor: UIColor.appGray800.cgColor,
             .paragraphStyle: paragraphStyle,
             .kern: letterSpacing
         ]
