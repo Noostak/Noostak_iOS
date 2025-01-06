@@ -1,5 +1,5 @@
 //
-//  AppTextField.swift
+//  AppGrayTextField.swift
 //  Noostak_iOS
 //
 //  Created by 박민서 on 1/6/25.
@@ -11,26 +11,15 @@ import Then
 import RxSwift
 import RxCocoa
 
-protocol AppTextFieldProtocol: UIView {
-    /// 텍스트 필드 텍스트 상태
-    var textRelay: BehaviorRelay<String> { get }
-    /// 텍스트 필드 포커스 되었는지
-    var isFocused: Bool { get }
-    /// 텍스트 필드 포커스하기
-    func becomeFirstResponder() -> Bool
-    /// 텍스트 필드 포커스 해제하기
-    func resignFirstResponder() -> Bool
-}
-
 final class AppGrayTextField: UIView {
     
     // MARK: Properties
     private let disposeBag = DisposeBag()
-    let textRelay: BehaviorRelay<String> = .init(value: "")
+    private let internalTextRelay: BehaviorRelay<String> = .init(value: "")
     private var countLimit: Int?
     
     // MARK: Views
-    private let textField = UITextField()
+    private let textField = PaddedTextField(padding: .init(top: 16, left: 16, bottom: 16, right: 16))
     private let countLabel = UILabel()
     private let exampleLabel = UILabel()
     
@@ -140,10 +129,17 @@ final class AppGrayTextField: UIView {
 }
 
 extension AppGrayTextField: AppTextFieldProtocol {
+    
+    var textRelay: BehaviorRelay<String> {
+        return self.internalTextRelay
+    }
+    
+    @discardableResult
     override func becomeFirstResponder() -> Bool {
         textField.becomeFirstResponder()
     }
     
+    @discardableResult
     override func resignFirstResponder() -> Bool {
         textField.resignFirstResponder()
     }
@@ -172,9 +168,17 @@ class ex: UIViewController {
             $0.width.equalTo(343)
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
-            self?.textField.resignFirstResponder() // 5초 뒤 포커스 해제
-        }
+        setupDismissKeyboardOnTap()
+    }
+    
+    private func setupDismissKeyboardOnTap() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        textField.resignFirstResponder()
     }
 }
 
