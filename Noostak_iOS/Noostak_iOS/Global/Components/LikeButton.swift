@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 enum Liked {
     case liked
@@ -17,21 +19,23 @@ enum Liked {
 final class LikeButton: UIButton {
     
     // MARK: Properties
-    private var likeStatus: Liked = .unliked
-    private var likeCount = 0
+    private let disposeBag = DisposeBag()
+    private var likeStatus = BehaviorRelay<Liked>(value: .unliked)
+    private var likeCount = BehaviorRelay<Int>(value: 0)
     
     // MARK: UI Components
     private let iconImageView = UIImageView()
     private let countLabel = UILabel()
-    private let likeStackView = UIStackView()
+    private lazy var likeStackView = UIStackView(arrangedSubviews: [iconImageView, countLabel])
     
     init(likeStatus: Liked, likeCount: Int) {
         super.init(frame: .zero)
-        self.likeStatus = likeStatus
-        self.likeCount = likeCount
+        self.likeStatus.accept(likeStatus)
+        self.likeCount.accept(likeCount)
         setUpHierarchy()
         setUpUI()
         setUpLayout()
+        bindUI()
     }
     
     required init?(coder: NSCoder) {
@@ -39,9 +43,6 @@ final class LikeButton: UIButton {
     }
     
     private func setUpHierarchy() {
-        [iconImageView, countLabel].forEach {
-            likeStackView.addArrangedSubview($0)
-        }
         self.addSubview(likeStackView)
     }
     
@@ -54,13 +55,10 @@ final class LikeButton: UIButton {
         
         iconImageView.do {
             $0.contentMode = .scaleAspectFit
-            $0.image = (likeStatus == .liked) ? .icFilledHeart : .icUnfilledHeart
         }
         
         countLabel.do {
             $0.font = .PretendardStyle.c2_sb.font
-            $0.text = "\(likeCount)"
-            $0.textColor = (likeStatus == .liked) ? .appBlack : .appGray600
         }
         
         self.do {
@@ -80,5 +78,32 @@ final class LikeButton: UIButton {
             $0.width.equalTo(50)
             $0.height.equalTo(30)
         }
+    }
+    
+    private func bindUI() {
+        self.rx.tap
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                let status = self.likeStatus.value
+                let count = self.likeCount.value
+                self.likeStatus.accept((status == .liked) ? .unliked : .liked)
+                self.likeCount.accept((status == .liked) ? count + 1 : max(0, count - 1))
+            })
+            .disposed(by: disposeBag)
+
+        likeStatus
+            .asObservable()
+            .subscribe(onNext: { [weak self] status in
+                guard let self = self else { return }
+                self.iconImageView.image = (status == .liked) ? .icFilledHeart : .icUnfilledHeart
+                self.countLabel.textColor = (status == .liked) ? .appBlack : .appGray600
+            })
+            .disposed(by: disposeBag)
+        
+        likeCount
+            .asObservable()
+            .map {"\($0)"}
+            .bind(to: countLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 }
