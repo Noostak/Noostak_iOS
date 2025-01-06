@@ -143,32 +143,3 @@ extension AppColorUnderlineTextField: AppTextFieldProtocol {
         return textField.isFirstResponder
     }
 }
-
-class ex3: UIViewController {
-    let textField = AppColorUnderlineTextField(typeString: "시간")
-    let disposeBag = DisposeBag()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.addSubview(textField)
-        
-        textField.textRelay.subscribe(onNext: { print($0) }).disposed(by: disposeBag)
-        
-        textField.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.width.equalTo(343)
-        }
-        
-        setupDismissKeyboardOnTap()
-    }
-    
-    private func setupDismissKeyboardOnTap() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapGesture.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func dismissKeyboard() {
-        textField.resignFirstResponder()
-    }
-}
