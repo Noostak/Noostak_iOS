@@ -20,18 +20,21 @@ final class LikeButton: UIButton {
     
     // MARK: Properties
     private let disposeBag = DisposeBag()
-    private var likeStatus = BehaviorRelay<Liked>(value: .unliked)
-    private var likeCount = BehaviorRelay<Int>(value: 0)
+    private let tapRelay = PublishRelay<Void>()
+    private var likeStatusRelay = BehaviorRelay<Liked>(value: .unliked)
+    private var likeCountRelay = BehaviorRelay<Int>(value: 0)
+    
+    struct Output {
+        let tapEvent: Observable<Void>
+    }
     
     // MARK: UI Components
     private let iconImageView = UIImageView()
     private let countLabel = UILabel()
     private lazy var likeStackView = UIStackView(arrangedSubviews: [iconImageView, countLabel])
     
-    init(likeStatus: Liked, likeCount: Int) {
+    init() {
         super.init(frame: .zero)
-        self.likeStatus.accept(likeStatus)
-        self.likeCount.accept(likeCount)
         setUpHierarchy()
         setUpUI()
         setUpLayout()
@@ -82,16 +85,10 @@ final class LikeButton: UIButton {
     
     private func bindUI() {
         self.rx.tap
-            .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
-                let status = self.likeStatus.value
-                let count = self.likeCount.value
-                self.likeStatus.accept((status == .liked) ? .unliked : .liked)
-                self.likeCount.accept((status == .liked) ? count + 1 : max(0, count - 1))
-            })
+            .bind(to: tapRelay)
             .disposed(by: disposeBag)
 
-        likeStatus
+        likeStatusRelay
             .asObservable()
             .subscribe(onNext: { [weak self] status in
                 guard let self = self else { return }
@@ -100,10 +97,25 @@ final class LikeButton: UIButton {
             })
             .disposed(by: disposeBag)
         
-        likeCount
+        likeCountRelay
             .asObservable()
             .map {"\($0)"}
             .bind(to: countLabel.rx.text)
             .disposed(by: disposeBag)
+    }
+}
+
+extension LikeButton {
+    // MARK: External Binding
+    func bind(likeStatus: Observable<Liked>, likeCount: Observable<Int>) -> Output {
+        likeStatus
+            .bind(to: likeStatusRelay)
+            .disposed(by: disposeBag)
+
+        likeCount
+            .bind(to: likeCountRelay)
+            .disposed(by: disposeBag)
+
+        return Output(tapEvent: tapRelay.asObservable())
     }
 }
