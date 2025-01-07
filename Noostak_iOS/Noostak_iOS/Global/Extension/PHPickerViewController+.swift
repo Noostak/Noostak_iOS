@@ -10,7 +10,6 @@ import RxSwift
 import RxCocoa
 import PhotosUI
 
-
 extension Reactive where Base: PHPickerViewController {
     /// `PHPickerViewController`의 선택 결과를 Observable로 노출
     ///
@@ -71,13 +70,10 @@ final class RxPHPickerDelegateProxy: DelegateProxy<PHPickerViewController, PHPic
     init(picker: PHPickerViewController) {
         super.init(parentObject: picker, delegateProxy: RxPHPickerDelegateProxy.self)
     }
-    
-    
 }
 
 // MARK: - DelegateProxyType 구현
 extension RxPHPickerDelegateProxy {
-    
     static func registerKnownImplementations() {
         self.register { RxPHPickerDelegateProxy(picker: $0) }
     }

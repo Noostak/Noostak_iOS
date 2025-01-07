@@ -9,7 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-
 extension Reactive where Base: UIImagePickerController {
     /// `UIImagePickerController`의 미디어 선택 결과를 Observable로 노출
     ///
@@ -64,10 +63,8 @@ final class RxImagePickerDelegateProxy: DelegateProxy<UIImagePickerController, U
     }
 }
 
-
 // MARK: - DelegateProxyType 구현
 extension RxImagePickerDelegateProxy {
-    
     static func registerKnownImplementations() {
         self.register { RxImagePickerDelegateProxy(imagePicker: $0) }
     }
@@ -92,4 +89,3 @@ extension RxImagePickerDelegateProxy: UIImagePickerControllerDelegate, UINavigat
         didFinishPicking.onCompleted()
     }
 }
-
