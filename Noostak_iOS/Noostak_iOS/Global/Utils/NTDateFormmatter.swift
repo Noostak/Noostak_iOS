@@ -20,3 +20,7 @@ public enum NTDateFormatter {
         }
     }
 }
+
+enum NTError: Error {
+    case stringDateFormatError // String -> Date 로 변경할때 지정한 포맷과 String 포맷이 다릅니다.
+}
