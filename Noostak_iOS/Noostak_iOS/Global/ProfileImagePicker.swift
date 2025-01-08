@@ -11,14 +11,24 @@ import Then
 import RxSwift
 import RxCocoa
 
+// MARK: Component Interface
+protocol ProfileImagePickerProtocol {
+    /// profileImage getter
+    var profileImage: UIImage { get }
+    /// profileImage setter
+    func setProfileImageView(with image: UIImage?)
+}
+
 final class ProfileImagePicker: UIView {
     
     // MARK: Properties
     fileprivate let tapGesture = UITapGestureRecognizer() // 전체 영역을 위한 탭 제스처
     
     // MARK: Views
-    fileprivate let profileImageView = UIImageView(image: .imgProfileFilled)
-    fileprivate let cameraButton = UIButton()
+    // 외부로 표시 + 내부에서만 사용 이 겹치는 프로퍼티의 경우, 내부 프로퍼티에 `_`를 추가했습니다
+    private let _profileImage = UIImage(resource: .imgProfileFilled)
+    private lazy var profileImageView = UIImageView(image: _profileImage)
+    private let cameraButton = UIButton()
     
     // MARK: Init
     override init(frame: CGRect) {
@@ -73,22 +83,34 @@ final class ProfileImagePicker: UIView {
             $0.size.equalTo(35)
         }
     }
+
+}
+
+// MARK: - Interface Extension
+extension ProfileImagePicker: ProfileImagePickerProtocol {
+    var profileImage: UIImage {
+        return self._profileImage
+    }
+    
+    func setProfileImageView(with profileImage: UIImage?) {
+        if let profileImage {
+            profileImageView.image = profileImage
+            profileImageView.layer.borderColor = UIColor.appGray600.cgColor
+        } else {
+            profileImageView.image = .imgProfileFilled
+            profileImageView.layer.borderColor = UIColor.clear.cgColor
+        }
+    }
 }
 
 // MARK: - Reactive Extension
 extension Reactive where Base: ProfileImagePicker {
     /// UIImageView의 이미지를 ControlProperty로 노출
-    var profileImage: ControlProperty<UIImage?> {
+    var profileImage: ControlProperty<UIImage> {
         return ControlProperty(
-            values: base.profileImageView.rx.observe(\.image),
+            values: base.profileImage.rx.observe(\.self),
             valueSink: Binder(base) { profileImgPicker, image in
-                if let image {
-                    profileImgPicker.profileImageView.image = image
-                    profileImgPicker.profileImageView.layer.borderColor = UIColor.appGray600.cgColor
-                } else {
-                    profileImgPicker.profileImageView.image = .imgProfileFilled
-                    profileImgPicker.profileImageView.layer.borderColor = UIColor.clear.cgColor
-                }
+                base.setProfileImageView(with: image)
             }
         )
     }
