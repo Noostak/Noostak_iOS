@@ -32,7 +32,7 @@ public final class NSTDateUtility {
         }
     }
     
-    func date(from string: String) -> Result<Date, NTError> {
+    func date(from string: String) -> Result<Date, NSTError> {
         if let date = formatter.date(from: string) {
             return .success(date)
         } else {
@@ -63,7 +63,7 @@ public extension NSTDateUtility {
         }
     }
     
-    enum NTError: Error {
+    enum NSTError: Error {
         case stringDateFormatError
         
         var localizedDescription: String {
