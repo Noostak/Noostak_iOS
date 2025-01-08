@@ -12,20 +12,22 @@ import RxSwift
 import RxCocoa
 
 // MARK: Component Interface
-protocol ProfileImagePickerProtocol {
+protocol ProfileImagePickerProtocol: UIView {
     /// profileImage getter
     var profileImage: UIImage { get }
     /// profileImage setter
     func setProfileImageView(with image: UIImage?)
+    /// tapGesture getter
+    var tapGesture: UITapGestureRecognizer { get }
 }
 
 final class ProfileImagePicker: UIView {
+    // 외부로 표시 + 내부에서만 사용 이 겹치는 프로퍼티의 경우, 내부 프로퍼티에 `_`를 추가했습니다
     
     // MARK: Properties
-    fileprivate let tapGesture = UITapGestureRecognizer() // 전체 영역을 위한 탭 제스처
+    private let _tapGesture = UITapGestureRecognizer() // 전체 영역을 위한 탭 제스처
     
     // MARK: Views
-    // 외부로 표시 + 내부에서만 사용 이 겹치는 프로퍼티의 경우, 내부 프로퍼티에 `_`를 추가했습니다
     private let _profileImage = UIImage(resource: .imgProfileFilled)
     private lazy var profileImageView = UIImageView(image: _profileImage)
     private let cameraButton = UIButton()
@@ -36,7 +38,7 @@ final class ProfileImagePicker: UIView {
         setUpHierarchy()
         setUpUI()
         setUpLayout()
-        addGestureRecognizer(tapGesture)
+        addGestureRecognizer(_tapGesture)
     }
     
     required init?(coder: NSCoder) {
@@ -101,15 +103,19 @@ extension ProfileImagePicker: ProfileImagePickerProtocol {
             profileImageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
+    
+    var tapGesture: UITapGestureRecognizer {
+        return self._tapGesture
+    }
 }
 
 // MARK: - Reactive Extension
-extension Reactive where Base: ProfileImagePicker {
+extension Reactive where Base: ProfileImagePickerProtocol {
     /// UIImageView의 이미지를 ControlProperty로 노출
     var profileImage: ControlProperty<UIImage> {
         return ControlProperty(
             values: base.profileImage.rx.observe(\.self),
-            valueSink: Binder(base) { profileImgPicker, image in
+            valueSink: Binder(base) { base, image in
                 base.setProfileImageView(with: image)
             }
         )
