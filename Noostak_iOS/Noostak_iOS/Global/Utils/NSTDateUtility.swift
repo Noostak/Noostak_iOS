@@ -50,6 +50,7 @@ public extension NSTDateUtility {
         case yyyyMMddHHmmss
         case yyyyMMdd
         case yyyyMM
+        case EE
         
         var format: String {
             switch self {
@@ -59,6 +60,8 @@ public extension NSTDateUtility {
                 return "yyyy-MM-dd"
             case .yyyyMM:
                 return "yyyy-MM"
+            case .EE:
+                return "EE"
             }
         }
     }
