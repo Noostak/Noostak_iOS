@@ -34,7 +34,6 @@ final class ScheduleCategoryButton: UIButton {
         switch categoryButtonType {
         case .Input:
             /// 입력 모드: 선택 여부에 따라 색상 변경
-            self.isUserInteractionEnabled = true
             self.titleLabel?.font = .PretendardStyle.b4_sb.font
             self.layer.borderWidth = 1
             self.layer.cornerRadius = 18.5
