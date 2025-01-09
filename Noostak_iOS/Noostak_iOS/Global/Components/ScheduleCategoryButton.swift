@@ -17,10 +17,11 @@ final class ScheduleCategoryButton: UIButton {
     private let isSelectedSubject = BehaviorRelay<Bool>(value: false)
         
     // MARK: Init
-    init(category: ScheduleCategory? = nil, buttonType: ButtonType = .Input) {
+    init(category: ScheduleCategory, buttonType: ButtonType) {
+        super.init(frame: .zero)
         self.category = category
         self.categoryButtonType = buttonType
-        super.init(frame: .zero)
+        self.setTitle(category.name, for: .normal)
         setUpUI()
         setUpLayout()
     }
@@ -74,15 +75,6 @@ final class ScheduleCategoryButton: UIButton {
                 self.setTitleColor(isSelected ? .appWhite : .appBlack, for: .normal)
             })
             .disposed(by: disposeBag)
-    }
-
-    /// 버튼 설정
-    func configure(for category: ScheduleCategory, buttonType: ButtonType) {
-        self.category = category
-        self.categoryButtonType = buttonType
-        self.setTitle(category.name, for: .normal)
-        setUpUI()
-        setUpLayout()
     }
 }
 
