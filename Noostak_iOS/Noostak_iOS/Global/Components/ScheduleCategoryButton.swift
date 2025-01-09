@@ -11,8 +11,8 @@ import RxCocoa
 
 final class ScheduleCategoryButton: UIButton {
     // MARK: Properties
-    var category: ScheduleCategory?
-    var categoryButtonType: ButtonType = .Input
+    private var category: ScheduleCategory?
+    private var categoryButtonType: ButtonType = .Input
     private let disposeBag = DisposeBag()
     private let isSelectedSubject = BehaviorRelay<Bool>(value: false)
         
