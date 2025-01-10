@@ -5,9 +5,9 @@
 //  Created by 오연서 on 1/5/25.
 //
 
-import Foundation
+import UIKit
 
-enum ScheduleCategory: String {
+enum ScheduleCategory: String, CaseIterable {
     case important
     case schedule
     case hobby
@@ -60,6 +60,20 @@ extension ScheduleCategory {
             return "취미"
         case .other:
             return "기타"
+        }
+    }
+    
+    /// 색상 반환
+    var displayColor: UIColor {
+        switch self {
+        case .important:
+            return .appOrange
+        case .schedule:
+            return .appBlue
+        case .hobby:
+            return .appPurple
+        case .other:
+            return .appMint
         }
     }
 }
