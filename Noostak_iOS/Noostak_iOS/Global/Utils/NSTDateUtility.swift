@@ -87,41 +87,43 @@ public extension NSTDateUtility {
     }
 }
 
-func dateList(_ dateStrings: [String]) -> [String] {
-    let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
-    let displayFormatter = NSTDateUtility(format: .MMddEE) // 출력 형식
-    
-    return dateStrings.compactMap { dateString in
-        switch formatter.date(from: dateString) {
-        case .success(let date):
-            return displayFormatter.string(from: date)
-        case .failure(let error):
-            print("Failed to parse date \(dateString): \(error.localizedDescription)")
-            return nil
-        }
-    }
-}
-
-func timeList(_ startTime: String, _ endTime: String) -> [String] {
-    let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
-    var result: [String] = []
-    
-    switch (formatter.date(from: startTime), formatter.date(from: endTime)) {
-    case (.success(let start), .success(let end)):
-        let calendar = Calendar.current
-        var current = start
+extension NSTDateUtility {
+    static func dateList(_ dateStrings: [String]) -> [String] {
+        let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
+        let displayFormatter = NSTDateUtility(format: .MMddEE) // 출력 형식
         
-        while current <= end {
-            result.append(NSTDateUtility(format: .HH).string(from: current)) // 출력 형식
-            if let nextHour = calendar.date(byAdding: .hour, value: 1, to: current) {
-                current = nextHour
-            } else {
-                break
+        return dateStrings.compactMap { dateString in
+            switch formatter.date(from: dateString) {
+            case .success(let date):
+                return displayFormatter.string(from: date)
+            case .failure(let error):
+                print("Failed to parse date \(dateString): \(error.localizedDescription)")
+                return nil
             }
         }
-    default:
-        print("Failed to parse start or end time.")
-        return []
     }
-    return result
+
+    static func timeList(_ startTime: String, _ endTime: String) -> [String] {
+        let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
+        var result: [String] = []
+        
+        switch (formatter.date(from: startTime), formatter.date(from: endTime)) {
+        case (.success(let start), .success(let end)):
+            let calendar = Calendar.current
+            var current = start
+            
+            while current <= end {
+                result.append(NSTDateUtility(format: .HH).string(from: current)) // 출력 형식
+                if let nextHour = calendar.date(byAdding: .hour, value: 1, to: current) {
+                    current = nextHour
+                } else {
+                    break
+                }
+            }
+        default:
+            print("Failed to parse start or end time.")
+            return []
+        }
+        return result
+    }
 }

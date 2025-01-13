@@ -25,27 +25,32 @@ final class SchedulePicker: UICollectionView {
         self.dateHeaders = dateHeaders
         self.mode = mode
         super.init(frame: .zero, collectionViewLayout: layout)
-        self.layout.configure(totalRows: timeHeaders.count + 1, totalColumns: dateHeaders.count + 1)
+        setupLayout()
+        setupFoundation()
+    }
+    
+    private func setupLayout() {
+        layout.configure(totalRows: timeHeaders.count + 1, totalColumns: dateHeaders.count + 1)
+    }
+
+    private func setupFoundation() {
         self.register(SchedulePickerCell.self, forCellWithReuseIdentifier: SchedulePickerCell.identifier)
-        self.cellAvailability = calculateCellAvailability(totalRows: timeHeaders.count + 1,
-                                                          totalColumns: dateHeaders.count + 1,
-                                                          //Fix: mockMemberStartTime 변경 필요
-                                                          startTimes: mockMemberStartTime)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Public Methods
     func addSelectedCell(at indexPath: IndexPath) {
-        guard mode == .editMode else { return }
-        if let cell = cellForItem(at: indexPath) as? SchedulePickerCell {
-            cell.isSelectedCell.toggle()
-            if cell.isSelectedCell {
-                selectedCells.insert(indexPath)
-            } else {
-                selectedCells.remove(indexPath)
-            }
+        guard mode == .editMode,
+              let cell = cellForItem(at: indexPath) as? SchedulePickerCell
+        else { return }
+        cell.isSelectedCell.toggle()
+        if cell.isSelectedCell {
+            selectedCells.insert(indexPath)
+        } else {
+            selectedCells.remove(indexPath)
         }
     }
     
@@ -53,30 +58,25 @@ final class SchedulePicker: UICollectionView {
         guard mode == .readMode else { return }
         let count = cellAvailability[indexPath, default: 0]
         let ratio = Float(count) / Float(participants)
-        
-        switch ratio {
-        case 0.01...0.2:
-            cell.backgroundColor = .appBlue50
-        case 0.2...0.4:
-            cell.backgroundColor = .appBlue200
-        case 0.4...0.6:
-            cell.backgroundColor = .appBlue400
-        case 0.6...0.8:
-            cell.backgroundColor = .appBlue700
-        case 0.8...1:
-            cell.backgroundColor = .appBlue800
-        default:
-            cell.backgroundColor = .clear
-        }
+        cell.backgroundColor = calculateBackgroundColor(for: ratio)
+    }
+
+    func updateCellAvailability(with dateList: [String], startTimes: [String]) {
+        guard mode == .readMode else { return }
+        self.cellAvailability = calculateCellAvailability(totalRows: self.timeHeaders.count + 1,
+                                                          totalColumns: self.dateHeaders.count + 1,
+                                                          dateList: dateList,
+                                                          startTimes: startTimes)
+        reloadData()
     }
 }
 
-/// .ReadMode 색상 반환 로직
+// MARK: Internal Logics
 extension SchedulePicker {
     ///각 시간에 대한 가능 인원 계산
-    private func calculateCellAvailability(totalRows: Int, totalColumns: Int, startTimes: [String]) -> [IndexPath: Int] {
+    private func calculateCellAvailability(totalRows: Int, totalColumns: Int, dateList: [String], startTimes: [String]) -> [IndexPath: Int] {
         var cellAvailability: [IndexPath: Int] = [:]
-        let dateTimeMapping = createDateTimeMapping(totalRows: totalRows, totalColumns: totalColumns)
+        let dateTimeMapping = createDateTimeMapping(totalRows: totalRows, totalColumns: totalColumns, dateList: dateList)
         for startTime in startTimes {
             if let indexPath = dateTimeMapping[startTime] {
                 cellAvailability[indexPath, default: 0] += 1
@@ -86,10 +86,9 @@ extension SchedulePicker {
     }
     
     /// 시각 - cell 매핑
-    private func createDateTimeMapping(totalRows: Int, totalColumns: Int) -> [String: IndexPath] {
+    private func createDateTimeMapping(totalRows: Int, totalColumns: Int, dateList: [String]) -> [String: IndexPath] {
         var mapping: [String: IndexPath] = [:]
-        //FIX: mockDateList 변경 필요
-        let dates = mockDateList.map { String($0.prefix(10)) }
+        let dates = dateList.map { String($0.prefix(10)) }
         
         for row in 1..<totalRows {
             for column in 1..<totalColumns {
@@ -103,11 +102,15 @@ extension SchedulePicker {
         }
         return mapping
     }
-
-    func reloadCellBackgrounds() {
-        self.cellAvailability = calculateCellAvailability(totalRows: self.timeHeaders.count + 1,
-                                                          totalColumns: self.dateHeaders.count + 1,
-                                                          startTimes: mockMemberStartTime)
-        self.reloadData()
+    
+    private func calculateBackgroundColor(for ratio: Float) -> UIColor {
+        switch ratio {
+        case 0.01...0.2: return .appBlue50
+        case 0.2...0.4: return .appBlue200
+        case 0.4...0.6: return .appBlue400
+        case 0.6...0.8: return .appBlue700
+        case 0.8...1: return .appBlue800
+        default: return .clear
+        }
     }
 }

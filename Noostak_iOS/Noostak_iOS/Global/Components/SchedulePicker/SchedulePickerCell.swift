@@ -56,15 +56,9 @@ final class SchedulePickerCell: UICollectionViewCell {
     }
     
     func configureHeader(for indexPath: IndexPath, dateHeaders: [String], timeHeaders: [String]) {
-        let totalRows = timeHeaders.count + 1
         let totalColumns = dateHeaders.count + 1
         let row = indexPath.item / totalColumns
         let column = indexPath.item % totalColumns
-        
-        let isTopLeft = indexPath.item == 0
-        let isTopRight = indexPath.item == totalColumns - 1
-        let isBottomLeft = indexPath.item == (totalRows - 1) * totalColumns
-        let isBottomRight = indexPath.item == totalRows * totalColumns - 1
         
         /// dateHeader, timeHeader text binding
         if row == 0, column > 0 {
@@ -74,20 +68,31 @@ final class SchedulePickerCell: UICollectionViewCell {
         } else {
             self.textLabel.text = ""
         }
+    }
+    
+    func configureTableRoundness(for indexPath: IndexPath, dateHeaders: [String], timeHeaders: [String]) {
+        let totalRows = timeHeaders.count + 1
+        let totalColumns = dateHeaders.count + 1
         
-        /// 테이블 모서리 둥글게
+        let isTopLeft = indexPath.item == 0
+        let isTopRight = indexPath.item == totalColumns - 1
+        let isBottomLeft = indexPath.item == (totalRows - 1) * totalColumns
+        let isBottomRight = indexPath.item == totalRows * totalColumns - 1
+        
         if isTopLeft || isTopRight || isBottomLeft || isBottomRight {
             self.layer.cornerRadius = 10
             self.layer.masksToBounds = true
-            self.layer.borderColor = UIColor.appGray200.cgColor
-            if isTopLeft {
+            switch true {
+            case isTopLeft:
                 self.layer.maskedCorners = [.layerMinXMinYCorner]
-            } else if isTopRight {
+            case isTopRight:
                 self.layer.maskedCorners = [.layerMaxXMinYCorner]
-            } else if isBottomLeft {
+            case isBottomLeft:
                 self.layer.maskedCorners = [.layerMinXMaxYCorner]
-            } else if isBottomRight {
+            case isBottomRight:
                 self.layer.maskedCorners = [.layerMaxXMaxYCorner]
+            default:
+                break
             }
         } else {
             self.layer.cornerRadius = 0
