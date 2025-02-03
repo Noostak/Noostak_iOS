@@ -88,6 +88,7 @@ public extension NSTDateUtility {
 }
 
 extension NSTDateUtility {
+    ///타임테이블 뷰 : "요일 월/일"
     static func dateList(_ dateStrings: [String]) -> [String] {
         let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
         let displayFormatter = NSTDateUtility(format: .MMddEE) // 출력 형식
@@ -102,7 +103,8 @@ extension NSTDateUtility {
             }
         }
     }
-
+    
+    ///타임테이블 뷰 : "00시"
     static func timeList(_ startTime: String, _ endTime: String) -> [String] {
         let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
         var result: [String] = []
@@ -125,5 +127,35 @@ extension NSTDateUtility {
             return []
         }
         return result
+    }
+    
+    ///약속상세뷰 : "9월 7일 (일) 10:00~12:00"
+    static func durationList(_ startTime: String, _ endTime: String) -> String {
+        let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        
+        // 날짜 포맷: "9월 7일 (일)"
+        dateFormatter.dateFormat = "M월 d일 (E)"
+        
+        // 시간 포맷: "10:00"
+        let timeFormatter = DateFormatter()
+        timeFormatter.locale = Locale(identifier: "ko_KR")
+        timeFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        timeFormatter.dateFormat = "HH:mm"
+        
+        switch (formatter.date(from: startTime), formatter.date(from: endTime)) {
+        case (.success(let start), .success(let end)):
+            let dateString = dateFormatter.string(from: start) // "9월 7일 (일)"
+            let startTimeString = timeFormatter.string(from: start) // "10:00"
+            let endTimeString = timeFormatter.string(from: end) // "12:00"
+            
+            return "\(dateString) \(startTimeString)~\(endTimeString)"
+            
+        default:
+            print("Failed to parse start or end time.")
+            return ""
+        }
     }
 }
