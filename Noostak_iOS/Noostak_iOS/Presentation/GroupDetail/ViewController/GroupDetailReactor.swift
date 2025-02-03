@@ -46,21 +46,6 @@ final class GroupDetailReactor: Reactor {
             return Observable.just(.setConfirmedData(reactors))
         }
     }
-    
-//    func mutate(action: Action) -> Observable<Mutation> {
-//        switch action {
-//        case .selectSegment(let index):
-//            return Observable.just(.setSelectedSegment(index))
-//        
-//        case .loadInProgressData:
-//            return Observable.just(.setInProgressData(mockInProgressData.map { InProgressCellReactor(schedule: $0) }))
-//                .observe(on: MainScheduler.instance)
-//
-//        case .loadConfirmedData:
-//            return Observable.just(.setConfirmedData(mockConfirmedData.map { ConfirmedCellReactor(schedule: $0) }))
-//                .observe(on: MainScheduler.instance)
-//        }
-//    }
 
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state

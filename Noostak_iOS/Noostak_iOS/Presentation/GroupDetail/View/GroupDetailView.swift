@@ -31,9 +31,10 @@ final class GroupDetailView: UIView {
     
     // MARK: Init
     override init(frame: CGRect) {
-        let layout = UICollectionViewFlowLayout()
-        self.inProgressCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        self.confirmedCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let inProgressLayout = UICollectionViewFlowLayout()
+        let confirmedLayout = UICollectionViewFlowLayout()
+        self.inProgressCollectionView = UICollectionView(frame: .zero, collectionViewLayout: inProgressLayout)
+        self.confirmedCollectionView = UICollectionView(frame: .zero, collectionViewLayout: confirmedLayout)
         super.init(frame: frame)
         setUpFoundation()
         setUpHierarchy()
@@ -50,7 +51,7 @@ final class GroupDetailView: UIView {
     private func setUpHierarchy() {
         [profileImageView, groupNameLabel, shareButton, groupMemberButton, scheduleListLabel,
          segmentedControl, underlineView, selectedUnderlineView,
-         defaultLabel, inProgressCollectionView, confirmedCollectionView].forEach {
+          inProgressCollectionView, confirmedCollectionView, defaultLabel].forEach {
             self.addSubview($0)
         }
     }

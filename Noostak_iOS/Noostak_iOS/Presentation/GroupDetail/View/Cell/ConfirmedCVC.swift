@@ -48,13 +48,13 @@ final class ConfirmedCVC: UICollectionViewCell, View {
         }
         
         scheduleTitleLabel.do {
-            $0.font = .PretendardStyle.b4_sb.font
+            $0.font = .PretendardStyle.b1_sb.font
             $0.textColor = .appGray900
         }
         
         timeLabel.do {
-            $0.font = .PretendardStyle.b5_r.font
-            $0.textColor = .appGray800
+            $0.font = .PretendardStyle.c3_r.font
+            $0.textColor = .appGray700
         }
         
         divider.do {
@@ -65,23 +65,23 @@ final class ConfirmedCVC: UICollectionViewCell, View {
     // MARK: setUpLayout
     private func setUpLayout() {
         chip.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
+            $0.top.equalToSuperview().offset(15)
             $0.leading.equalToSuperview().offset(6)
             $0.size.equalTo(13)
         }
         
         scheduleTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(15)
+            $0.top.equalToSuperview().offset(10)
             $0.leading.equalTo(chip.snp.trailing).offset(9)
         }
         
         timeLabel.snp.makeConstraints {
-            $0.top.equalTo(scheduleTitleLabel.snp.bottom).offset(1)
+            $0.top.equalTo(scheduleTitleLabel.snp.bottom).offset(4)
             $0.leading.equalTo(scheduleTitleLabel)
         }
         
         divider.snp.makeConstraints {
-            $0.top.equalTo(timeLabel.snp.bottom).offset(15)
+            $0.bottom.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(1)
         }

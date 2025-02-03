@@ -96,12 +96,13 @@ final class InProgressCVC: UICollectionViewCell, View {
         }
         
         moveButton.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(22)
+            $0.centerY.equalTo(scheduleTitleLabel)
+            $0.trailing.equalToSuperview().inset(22)
             $0.size.equalTo(18)
         }
         
         timeLabel.snp.makeConstraints {
-            $0.top.equalTo(scheduleTitleLabel.snp.bottom).offset(10)
+            $0.top.equalTo(scheduleTitleLabel.snp.bottom).offset(13)
             $0.leading.equalTo(scheduleTitleLabel)
         }
         
@@ -129,7 +130,7 @@ extension InProgressCVC {
         let schedule = reactor.currentState.schedule
         scheduleTitleLabel.text = schedule.schedule.name
         timeLabel.text = NSTDateUtility.durationList(schedule.startTime, schedule.endTime)
-        availabilityLabel.text = "\(schedule.availableMemberCount) / \(schedule.groupMemberCount)"
+        availabilityLabel.text = "\(schedule.availableMemberCount)명/ \(schedule.groupMemberCount)명"
         progressBar.snp.makeConstraints {
             $0.top.equalTo(timeLabel.snp.bottom).offset(10)
             $0.leading.equalTo(backgroundProgressBar)

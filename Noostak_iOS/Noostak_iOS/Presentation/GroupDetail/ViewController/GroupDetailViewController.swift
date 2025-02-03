@@ -78,12 +78,9 @@ final class GroupDetailViewController: UIViewController, View {
                 self.rootView.inProgressCollectionView.isHidden = !isProgress
                 self.rootView.confirmedCollectionView.isHidden = isProgress
                 
-                let inProgressEmpty = state.inProgressCellReactors.isEmpty
-                let confirmedEmpty = state.confirmedCellReactors.isEmpty
-                
-                self.rootView.defaultLabel.isHidden = !(isProgress ? inProgressEmpty : confirmedEmpty)
+                let noData = isProgress ? state.inProgressCellReactors.isEmpty : state.confirmedCellReactors.isEmpty
                 self.rootView.defaultLabel.text = isProgress ? "현재 진행중인 약속이 없어요" : "아직 확정된 약속이 없어요"
-                self.rootView.layoutIfNeeded()
+                self.rootView.defaultLabel.isHidden = !noData
             })
             .disposed(by: disposeBag)
         
@@ -109,7 +106,6 @@ final class GroupDetailViewController: UIViewController, View {
 }
 
 extension GroupDetailViewController: UICollectionViewDelegateFlowLayout {
-    /// 순서가 왜바껴쓸까..
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch collectionView {
         case rootView.inProgressCollectionView:
