@@ -68,10 +68,8 @@ final class AppToastView: UIView {
         }
         
         backgroundView.snp.makeConstraints {
-            $0.leading.equalTo(messageLabel).offset(-20)
-            $0.trailing.equalTo(messageLabel).offset(20)
-            $0.top.equalTo(messageLabel).offset(-12)
-            $0.bottom.equalTo(messageLabel).offset(12)
+            $0.horizontalEdges.equalTo(messageLabel).inset(-20)
+            $0.verticalEdges.equalTo(messageLabel).inset(-12)
         }
     }
 }
