@@ -53,6 +53,8 @@ public extension NSTDateUtility {
         case yyyyMM
         case EE
         case HH
+        case HHmm
+        case EEMMdd
         case MMddEE
         
         var format: String {
@@ -69,8 +71,12 @@ public extension NSTDateUtility {
                 return "EE"
             case .HH:
                 return "HH"
-            case .MMddEE:
+            case .HHmm:
+                return "HH:mm"
+            case .EEMMdd:
                 return "EE\nMM/dd"
+            case .MMddEE:
+                return "M월 d일 (EE)"
             }
         }
     }
@@ -88,9 +94,10 @@ public extension NSTDateUtility {
 }
 
 extension NSTDateUtility {
+    ///타임테이블 뷰 : "요일 월/일"
     static func dateList(_ dateStrings: [String]) -> [String] {
         let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
-        let displayFormatter = NSTDateUtility(format: .MMddEE) // 출력 형식
+        let displayFormatter = NSTDateUtility(format: .EEMMdd) // 출력 형식
         
         return dateStrings.compactMap { dateString in
             switch formatter.date(from: dateString) {
@@ -102,7 +109,8 @@ extension NSTDateUtility {
             }
         }
     }
-
+    
+    ///타임테이블 뷰 : "00시"
     static func timeList(_ startTime: String, _ endTime: String) -> [String] {
         let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
         var result: [String] = []
@@ -126,4 +134,20 @@ extension NSTDateUtility {
         }
         return result
     }
+    
+    static func durationList(_ startTime: String, _ endTime: String) -> String {
+        let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
+        let dateFormatter = NSTDateUtility(format: .MMddEE) // "9월 7일 (일)"
+        let timeFormatter = NSTDateUtility(format: .HHmm) // "10:00"
+
+        let startDateResult = formatter.date(from: startTime)
+        let endDateResult = formatter.date(from: endTime)
+
+        guard case .success(let startDate) = startDateResult,
+              case .success(let endDate) = endDateResult else {
+            return "Invalid date format"
+        }
+        return "\(dateFormatter.string(from: startDate)) \(timeFormatter.string(from: startDate))~\(timeFormatter.string(from: endDate))"
+    }
+
 }
