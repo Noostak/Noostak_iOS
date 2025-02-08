@@ -24,7 +24,7 @@ final class InProgressCVC: UICollectionViewCell, View {
     private let availabilityLabel = UILabel()
     private let backgroundProgressBar = UIView()
     private let progressBar = UIView()
-
+    
     // MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,7 +60,7 @@ final class InProgressCVC: UICollectionViewCell, View {
         }
         
         moveButton.do {
-            $0.setImage(.icVector, for: .normal)
+            $0.setImage(.icArrowRight, for: .normal)
         }
         
         timeLabel.do {
@@ -130,11 +130,11 @@ extension InProgressCVC {
         let schedule = reactor.currentState.schedule
         scheduleTitleLabel.text = schedule.schedule.name
         timeLabel.text = NSTDateUtility.durationList(schedule.startTime, schedule.endTime)
-        availabilityLabel.text = "\(schedule.availableMemberCount)명/ \(schedule.groupMemberCount)명"
+        availabilityLabel.text = "\(schedule.availableMemberCount)명/\(schedule.groupMemberCount)명"
         progressBar.snp.makeConstraints {
             $0.top.equalTo(timeLabel.snp.bottom).offset(10)
             $0.leading.equalTo(backgroundProgressBar)
-            $0.width.equalTo(50)
+            $0.width.equalTo((Int(self.frame.width) - 32) * schedule.availableMemberCount/schedule.groupMemberCount)
             $0.height.equalTo(4)
         }
     }

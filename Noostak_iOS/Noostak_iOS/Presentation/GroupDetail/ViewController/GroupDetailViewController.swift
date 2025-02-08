@@ -45,9 +45,6 @@ final class GroupDetailViewController: UIViewController, View {
         rootView.confirmedCollectionView.register(ConfirmedCVC.self, forCellWithReuseIdentifier: ConfirmedCVC.identifier)
         rootView.inProgressCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
         rootView.confirmedCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
-        DispatchQueue.main.async {
-            self.rootView.layoutIfNeeded()
-        }
     }
     
     // MARK: - Bind Reactor
@@ -55,17 +52,10 @@ final class GroupDetailViewController: UIViewController, View {
         rootView.segmentedControl.rx.selectedSegmentIndex
             .distinctUntilChanged()
             .flatMapLatest { index -> Observable<Reactor.Action> in
-                if index == 0 {
-                    return Observable.concat([
-                        .just(.selectSegment(index)),
-                        .just(.loadInProgressData)
-                    ])
-                } else {
-                    return Observable.concat([
-                        .just(.selectSegment(index)),
-                        .just(.loadConfirmedData)
-                    ])
-                }
+                Observable.concat([
+                    .just(.selectSegment(index)),
+                    .just(index == 0 ? .loadInProgressData : .loadConfirmedData)
+                ])
             }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
@@ -90,7 +80,7 @@ final class GroupDetailViewController: UIViewController, View {
             .do(onNext: { _ in
                 self.rootView.inProgressCollectionView.reloadData()
             })
-            .bind(to: rootView.inProgressCollectionView.rx.items(cellIdentifier: InProgressCVC.identifier, cellType: InProgressCVC.self)) { index, reactor, cell in
+            .bind(to: rootView.inProgressCollectionView.rx.items(cellIdentifier: InProgressCVC.identifier, cellType: InProgressCVC.self)) { _, reactor, cell in
                 cell.reactor = reactor
             }
             .disposed(by: disposeBag)
@@ -98,13 +88,14 @@ final class GroupDetailViewController: UIViewController, View {
         // 확정된 약속 바인딩
         reactor.state.map { $0.confirmedCellReactors }
             .do(onNext: { _ in self.rootView.confirmedCollectionView.reloadData() })
-            .bind(to: rootView.confirmedCollectionView.rx.items(cellIdentifier: ConfirmedCVC.identifier, cellType: ConfirmedCVC.self)) { index, reactor, cell in
+            .bind(to: rootView.confirmedCollectionView.rx.items(cellIdentifier: ConfirmedCVC.identifier, cellType: ConfirmedCVC.self)) { _, reactor, cell in
                 cell.reactor = reactor
             }
             .disposed(by: disposeBag)
     }
 }
 
+// MARK: - CollectionViewDelegateFlowLayout
 extension GroupDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch collectionView {

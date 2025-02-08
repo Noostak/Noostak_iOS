@@ -53,6 +53,8 @@ public extension NSTDateUtility {
         case yyyyMM
         case EE
         case HH
+        case HHmm
+        case EEMMdd
         case MMddEE
         
         var format: String {
@@ -69,8 +71,12 @@ public extension NSTDateUtility {
                 return "EE"
             case .HH:
                 return "HH"
-            case .MMddEE:
+            case .HHmm:
+                return "HH:mm"
+            case .EEMMdd:
                 return "EE\nMM/dd"
+            case .MMddEE:
+                return "M월 d일 (EE)"
             }
         }
     }
@@ -91,7 +97,7 @@ extension NSTDateUtility {
     ///타임테이블 뷰 : "요일 월/일"
     static func dateList(_ dateStrings: [String]) -> [String] {
         let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
-        let displayFormatter = NSTDateUtility(format: .MMddEE) // 출력 형식
+        let displayFormatter = NSTDateUtility(format: .EEMMdd) // 출력 형식
         
         return dateStrings.compactMap { dateString in
             switch formatter.date(from: dateString) {
@@ -129,33 +135,19 @@ extension NSTDateUtility {
         return result
     }
     
-    ///약속상세뷰 : "9월 7일 (일) 10:00~12:00"
     static func durationList(_ startTime: String, _ endTime: String) -> String {
         let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-        
-        // 날짜 포맷: "9월 7일 (일)"
-        dateFormatter.dateFormat = "M월 d일 (E)"
-        
-        // 시간 포맷: "10:00"
-        let timeFormatter = DateFormatter()
-        timeFormatter.locale = Locale(identifier: "ko_KR")
-        timeFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-        timeFormatter.dateFormat = "HH:mm"
-        
-        switch (formatter.date(from: startTime), formatter.date(from: endTime)) {
-        case (.success(let start), .success(let end)):
-            let dateString = dateFormatter.string(from: start) // "9월 7일 (일)"
-            let startTimeString = timeFormatter.string(from: start) // "10:00"
-            let endTimeString = timeFormatter.string(from: end) // "12:00"
-            
-            return "\(dateString) \(startTimeString)~\(endTimeString)"
-            
-        default:
-            print("Failed to parse start or end time.")
-            return ""
+        let dateFormatter = NSTDateUtility(format: .MMddEE) // "9월 7일 (일)"
+        let timeFormatter = NSTDateUtility(format: .HHmm) // "10:00"
+
+        let startDateResult = formatter.date(from: startTime)
+        let endDateResult = formatter.date(from: endTime)
+
+        guard case .success(let startDate) = startDateResult,
+              case .success(let endDate) = endDateResult else {
+            return "Invalid date format"
         }
+        return "\(dateFormatter.string(from: startDate)) \(timeFormatter.string(from: startDate))~\(timeFormatter.string(from: endDate))"
     }
+
 }

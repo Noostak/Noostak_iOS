@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 
 final class GroupDetailView: UIView {
-
+    
     // MARK: Properties
     private let disposeBag = DisposeBag()
     
@@ -26,15 +26,11 @@ final class GroupDetailView: UIView {
     private let underlineView = UIView()
     private let selectedUnderlineView = UIView()
     let defaultLabel = UILabel()
-    let inProgressCollectionView: UICollectionView
-    let confirmedCollectionView: UICollectionView
-    
+    var inProgressCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var confirmedCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+
     // MARK: Init
     override init(frame: CGRect) {
-        let inProgressLayout = UICollectionViewFlowLayout()
-        let confirmedLayout = UICollectionViewFlowLayout()
-        self.inProgressCollectionView = UICollectionView(frame: .zero, collectionViewLayout: inProgressLayout)
-        self.confirmedCollectionView = UICollectionView(frame: .zero, collectionViewLayout: confirmedLayout)
         super.init(frame: frame)
         setUpFoundation()
         setUpHierarchy()
@@ -42,16 +38,16 @@ final class GroupDetailView: UIView {
         setUpLayout()
         bindSegmentControl()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: setUpHierarchy
     private func setUpHierarchy() {
         [profileImageView, groupNameLabel, shareButton, groupMemberButton, scheduleListLabel,
          segmentedControl, underlineView, selectedUnderlineView,
-          inProgressCollectionView, confirmedCollectionView, defaultLabel].forEach {
+         inProgressCollectionView, confirmedCollectionView, defaultLabel].forEach {
             self.addSubview($0)
         }
     }
@@ -82,12 +78,12 @@ final class GroupDetailView: UIView {
             config.baseForegroundColor = .appGray800
             config.attributedTitle = AttributedString("그룹 멤버 8",
                                                       attributes: AttributeContainer([.font: UIFont.PretendardStyle.b2_r.font]))
-            config.image = .icVector
+            config.image = .icArrowRight
             config.imagePlacement = .trailing
             config.imagePadding = 5
             config.contentInsets = .zero
             $0.configuration = config
-
+            
         }
         
         scheduleListLabel.do {
@@ -126,12 +122,12 @@ final class GroupDetailView: UIView {
         inProgressCollectionView.do {
             $0.isHidden = false
         }
-
+        
         confirmedCollectionView.do {
             $0.isHidden = true
         }
     }
-
+    
     // MARK: setUpLayout
     private func setUpLayout() {
         profileImageView.snp.makeConstraints {
