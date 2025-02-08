@@ -53,6 +53,8 @@ public extension NSTDateUtility {
         case yyyyMM
         case EE
         case HH
+        case HHmm
+        case EEMMdd
         case MMddEE
         
         var format: String {
@@ -67,10 +69,6 @@ public extension NSTDateUtility {
                 return "yyyy-MM"
             case .EE:
                 return "EE"
-            case .HH:
-                return "HH"
-            case .MMddEE:
-                return "EE\nMM/dd"
             }
         }
     }
@@ -85,43 +83,4 @@ public extension NSTDateUtility {
             }
         }
     }
-}
-
-func dateList(_ dateStrings: [String]) -> [String] {
-    let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
-    let displayFormatter = NSTDateUtility(format: .MMddEE) // 출력 형식
-    
-    return dateStrings.compactMap { dateString in
-        switch formatter.date(from: dateString) {
-        case .success(let date):
-            return displayFormatter.string(from: date)
-        case .failure(let error):
-            print("Failed to parse date \(dateString): \(error.localizedDescription)")
-            return nil
-        }
-    }
-}
-
-func timeList(_ startTime: String, _ endTime: String) -> [String] {
-    let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
-    var result: [String] = []
-    
-    switch (formatter.date(from: startTime), formatter.date(from: endTime)) {
-    case (.success(let start), .success(let end)):
-        let calendar = Calendar.current
-        var current = start
-        
-        while current <= end {
-            result.append(NSTDateUtility(format: .HH).string(from: current)) // 출력 형식
-            if let nextHour = calendar.date(byAdding: .hour, value: 1, to: current) {
-                current = nextHour
-            } else {
-                break
-            }
-        }
-    default:
-        print("Failed to parse start or end time.")
-        return []
-    }
-    return result
 }
