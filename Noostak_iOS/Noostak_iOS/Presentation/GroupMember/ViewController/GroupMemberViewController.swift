@@ -62,17 +62,19 @@ final class GroupMemberViewController: UIViewController, View {
         
         reactor.state.map { $0.group }
             .subscribe(onNext: { [weak self] group in
-                self?.rootView.groupProfileImageView.image = .imgProfileFilled // api 연결시 변경
-                self?.rootView.groupNameLabel.text = group.name
-                self?.rootView.groupMemberTotalLabel.text = "그룹 멤버 \(group.membersCount)"
-                self?.rootView.groupMemberLabel.text = "멤버 (\(group.membersCount)/50)"
+                guard let self = self else { return }
+                self.rootView.groupProfileImageView.image = .imgProfileFilled // api 연결시 변경
+                self.rootView.groupNameLabel.text = group.name
+                self.rootView.groupMemberTotalLabel.text = "그룹 멤버 \(group.membersCount)"
+                self.rootView.groupMemberLabel.text = "멤버 (\(group.membersCount)/50)"
             })
             .disposed(by: disposeBag)
 
         reactor.state.map { $0.group.host }
             .subscribe(onNext: { [weak self] host in
-                self?.rootView.groupHostName.text = host.name
-                self?.rootView.groupHostProfile.image = .imgProfileFilled // api 연결시 변경
+                guard let self = self else { return }
+                self.rootView.groupHostName.text = host.name
+                self.rootView.groupHostProfile.image = .imgProfileFilled // api 연결시 변경
             })
             .disposed(by: disposeBag)
     }
