@@ -69,6 +69,14 @@ public extension NSTDateUtility {
                 return "yyyy-MM"
             case .EE:
                 return "EE"
+            case .HH:
+                return "HH"
+            case .HHmm:
+                return "HH:mm"
+            case .EEMMdd:
+                return "EE\nMM/dd"
+            case .MMddEE:
+                return "M월 d일 (EE)"
             }
         }
     }
@@ -82,5 +90,22 @@ public extension NSTDateUtility {
                 return "String -> Date 로 변경할때 지정한 포맷과 String 포맷이 다릅니다."
             }
         }
+    }
+}
+
+extension NSTDateUtility {
+    static func durationList(_ startTime: String, _ endTime: String) -> String {
+        let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss)
+        let dateFormatter = NSTDateUtility(format: .MMddEE) // "9월 7일 (일)"
+        let timeFormatter = NSTDateUtility(format: .HHmm) // "10:00"
+
+        let startDateResult = formatter.date(from: startTime)
+        let endDateResult = formatter.date(from: endTime)
+
+        guard case .success(let startDate) = startDateResult,
+              case .success(let endDate) = endDateResult else {
+            return "Invalid date format"
+        }
+        return "\(dateFormatter.string(from: startDate)) \(timeFormatter.string(from: startDate))~\(timeFormatter.string(from: endDate))"
     }
 }
