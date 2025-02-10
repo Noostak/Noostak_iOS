@@ -45,7 +45,7 @@ final class ScheduleCategoryButton: UIButton {
             self.backgroundColor = category.displayColor
             self.setTitleColor(category == .other ? .appGray800 : .appWhite, for: .normal)
             self.layer.borderColor = UIColor.appWhite.cgColor
-            self.titleLabel?.font = .PretendardStyle.c2_sb.font
+            self.titleLabel?.font = .PretendardStyle.c3_sb.font
             self.layer.borderWidth = 1
             self.layer.cornerRadius = 15
         }

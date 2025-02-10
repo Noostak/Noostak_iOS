@@ -61,9 +61,10 @@ extension UIFont {
         case b4_r
         case b5_r
         case c1_b
-        case c2_sb
+        case c3_sb
         case c3_r
         case c4_r
+        case c5_r
         
         var font: UIFont {
             switch self {
@@ -86,9 +87,10 @@ extension UIFont {
             case .b4_r: return UIFont.pretendard(.regular, size: 15)
             case .b5_r: return UIFont.pretendard(.regular, size: 14)
             case .c1_b: return UIFont.pretendard(.bold, size: 13)
-            case .c2_sb: return UIFont.pretendard(.semibold, size: 13)
+            case .c3_sb: return UIFont.pretendard(.semibold, size: 13)
             case .c3_r: return UIFont.pretendard(.regular, size: 13)
             case .c4_r: return UIFont.pretendard(.regular, size: 11)
+            case .c5_r: return UIFont.pretendard(.regular, size: 10)
             }
         }
         
@@ -97,7 +99,7 @@ extension UIFont {
             switch self {
             case .h1_b, .h1_sb, .h2_b, .h3_sb, .h3_22_SB, .h4_b, .h4_sb, .h5_b,
                     .t1_sb, .t2_r, .t3_b, .t4_b, .b1_sb, .b2_r, .b4_sb,
-                    .b4_sb_1percent, .b4_r, .b5_r, .c1_b, .c2_sb, .c3_r, .c4_r:
+                    .b4_sb_1percent, .b4_r, .b5_r, .c1_b, .c3_sb, .c3_r, .c4_r, .c5_r:
                 return 140
             }
         }
