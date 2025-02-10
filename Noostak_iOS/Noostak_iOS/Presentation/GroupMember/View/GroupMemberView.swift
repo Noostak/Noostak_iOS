@@ -27,6 +27,7 @@ final class GroupMemberView: UIView {
     private let divider = UIView()
     let groupMemberLabel = UILabel()
     var groupMemberCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    let defaultLabel = UILabel()
 
     // MARK: Init
     override init(frame: CGRect) {
@@ -44,7 +45,7 @@ final class GroupMemberView: UIView {
     // MARK: setUpHierarchy
     private func setUpHierarchy() {
         [groupProfileImageView, groupNameLabel, shareButton, groupMemberTotalLabel, groupHostLabel,
-         groupHostProfile, groupHostName, divider, groupMemberLabel, groupMemberCollectionView].forEach {
+         groupHostProfile, groupHostName, divider, groupMemberLabel, groupMemberCollectionView, defaultLabel].forEach {
             self.addSubview($0)
         }
     }
@@ -96,6 +97,15 @@ final class GroupMemberView: UIView {
         groupMemberLabel.do {
             $0.font = .PretendardStyle.b4_sb.font
             $0.textColor = .appGray700
+        }
+        
+        defaultLabel.do {
+            $0.text = "아직 그룹 멤버가 없어요\n멤버를 초대하고 그룹을 만들어보세요"
+            $0.font = .PretendardStyle.b2_r.font
+            $0.textColor = .appGray900
+            $0.textAlignment = .center
+            $0.numberOfLines = 2
+            $0.isHidden = true
         }
     }
     
@@ -154,6 +164,11 @@ final class GroupMemberView: UIView {
             $0.top.equalTo(groupMemberLabel.snp.bottom).offset(14)
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview()
+        }
+        
+        defaultLabel.snp.makeConstraints {
+            $0.top.equalTo(groupMemberLabel.snp.bottom).offset(39)
+            $0.centerX.equalToSuperview()
         }
     }
 }

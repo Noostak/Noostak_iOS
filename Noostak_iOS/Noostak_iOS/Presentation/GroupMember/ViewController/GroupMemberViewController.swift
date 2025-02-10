@@ -57,6 +57,10 @@ final class GroupMemberViewController: UIViewController, View {
         )
 
         reactor.state.map { [SectionModel(model: "Members", items: $0.group.members)] }
+            .do(onNext: { [weak self] sections in
+                let isEmpty = sections.first?.items.isEmpty ?? true
+                self?.rootView.defaultLabel.isHidden = !isEmpty
+            })
             .bind(to: rootView.groupMemberCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
