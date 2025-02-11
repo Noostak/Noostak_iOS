@@ -44,7 +44,7 @@ final class ScheduleInfoView: UIView {
         setUpHierarchy()
         setUpUI()
         setUpLayout()
-        updateUI()
+        updateUI(isInProgress: state == .inProgress)
     }
     
     required init?(coder: NSCoder) {
@@ -151,7 +151,12 @@ final class ScheduleInfoView: UIView {
             $0.width.equalTo(53)
         }
         
+        self.state == .inProgress ?
         availableLabel.snp.makeConstraints {
+            $0.top.equalTo(scheduleDurationLabel.snp.bottom).offset(16)
+            $0.leading.equalTo(scheduleDurationLabel)
+        } : availableLabel.snp.makeConstraints {
+            $0.top.equalTo(scheduleCategoryLabel.snp.bottom).offset(26)
             $0.leading.equalTo(scheduleTimeTitleLabel)
         }
         
@@ -171,34 +176,9 @@ final class ScheduleInfoView: UIView {
         }
     }
     
-    private func updateUI() {
-        switch state {
-        case .inProgress:
-            scheduleDurationLabel.isHidden = false
-            likeButton.isHidden = false
-            scheduleTimeTitleLabel.isHidden = true
-            scheduleTimeLabel.isHidden = true
-            scheduleCategoryLabel.isHidden = true
-            scheduleCategoryChip.isHidden = true
-            
-            availableLabel.snp.remakeConstraints {
-                $0.top.equalTo(scheduleDurationLabel.snp.bottom).offset(16)
-                $0.leading.equalTo(scheduleDurationLabel)
-            }
-            
-        case .confirmed:
-            scheduleDurationLabel.isHidden = true
-            likeButton.isHidden = true
-            scheduleTimeTitleLabel.isHidden = false
-            scheduleTimeLabel.isHidden = false
-            scheduleCategoryLabel.isHidden = false
-            scheduleCategoryChip.isHidden = false
-            
-            availableLabel.snp.remakeConstraints {
-                $0.top.equalTo(scheduleCategoryLabel.snp.bottom).offset(26)
-                $0.leading.equalTo(scheduleTimeTitleLabel)
-            }
-        }
+    private func updateUI(isInProgress: Bool) {
+        [scheduleDurationLabel, likeButton].forEach { $0.isHidden = !isInProgress }
+        [scheduleTimeTitleLabel, scheduleTimeLabel, scheduleCategoryLabel, scheduleCategoryChip].forEach { $0.isHidden = isInProgress }
     }
 }
 

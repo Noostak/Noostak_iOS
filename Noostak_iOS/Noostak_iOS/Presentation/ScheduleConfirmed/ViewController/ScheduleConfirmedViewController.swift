@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-final class ScheduleConfirmedViewController: UIViewController, View, UIScrollViewDelegate {
+final class ScheduleConfirmedViewController: UIViewController, View {
     // MARK: - Properties
     var disposeBag = DisposeBag()
     private let rootView = ScheduleConfirmedView()
