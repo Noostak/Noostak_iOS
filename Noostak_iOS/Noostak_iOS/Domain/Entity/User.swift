@@ -9,7 +9,7 @@ struct User {
     ///유저 이름
     let name: String
     ///유저 프로필사진
-    let image: String?
+    let userImage: String?
 }
 
 struct UserToken {

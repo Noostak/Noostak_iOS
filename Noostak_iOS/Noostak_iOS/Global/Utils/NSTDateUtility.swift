@@ -94,49 +94,8 @@ public extension NSTDateUtility {
 }
 
 extension NSTDateUtility {
-    ///타임테이블 뷰 : "요일 월/일"
-    static func dateList(_ dateStrings: [String]) -> [String] {
-        let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
-        let displayFormatter = NSTDateUtility(format: .EEMMdd) // 출력 형식
-        
-        return dateStrings.compactMap { dateString in
-            switch formatter.date(from: dateString) {
-            case .success(let date):
-                return displayFormatter.string(from: date)
-            case .failure(let error):
-                print("Failed to parse date \(dateString): \(error.localizedDescription)")
-                return nil
-            }
-        }
-    }
-    
-    ///타임테이블 뷰 : "00시"
-    static func timeList(_ startTime: String, _ endTime: String) -> [String] {
-        let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
-        var result: [String] = []
-        
-        switch (formatter.date(from: startTime), formatter.date(from: endTime)) {
-        case (.success(let start), .success(let end)):
-            let calendar = Calendar.current
-            var current = start
-            
-            while current <= end {
-                result.append(NSTDateUtility(format: .HH).string(from: current)) // 출력 형식
-                if let nextHour = calendar.date(byAdding: .hour, value: 1, to: current) {
-                    current = nextHour
-                } else {
-                    break
-                }
-            }
-        default:
-            print("Failed to parse start or end time.")
-            return []
-        }
-        return result
-    }
-    
     static func durationList(_ startTime: String, _ endTime: String) -> String {
-        let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss) // ISO 8601 형식
+        let formatter = NSTDateUtility(format: .yyyyMMddTHHmmss)
         let dateFormatter = NSTDateUtility(format: .MMddEE) // "9월 7일 (일)"
         let timeFormatter = NSTDateUtility(format: .HHmm) // "10:00"
 
@@ -149,5 +108,4 @@ extension NSTDateUtility {
         }
         return "\(dateFormatter.string(from: startDate)) \(timeFormatter.string(from: startDate))~\(timeFormatter.string(from: endDate))"
     }
-
 }
