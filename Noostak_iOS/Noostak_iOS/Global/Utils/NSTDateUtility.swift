@@ -56,6 +56,7 @@ public extension NSTDateUtility {
         case HHmm
         case EEMMdd
         case MMddEE
+        case MMddHHmm
         
         var format: String {
             switch self {
@@ -77,6 +78,8 @@ public extension NSTDateUtility {
                 return "EE\nMM/dd"
             case .MMddEE:
                 return "M월 d일 (EE)"
+            case .MMddHHmm:
+                return "MM/dd  HH:mm"
             }
         }
     }
