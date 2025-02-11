@@ -29,6 +29,13 @@ final class MemberAvailabilityChip: UIView {
         setUpLayout()
     }
     
+    func update(name: String, status: MemberStatus) {
+        self.chipLabel.text = name
+        self.status = status
+        setUpUI()
+        setUpLayout()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
