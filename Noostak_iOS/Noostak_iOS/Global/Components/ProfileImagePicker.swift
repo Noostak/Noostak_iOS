@@ -69,7 +69,7 @@ final class ProfileImagePicker: UIView {
         
         cameraButton.do {
             $0.setImage(.icnProfileCamera, for: .normal)
-            $0.isUserInteractionEnabled = true
+            $0.isUserInteractionEnabled = false
         }
     }
     
