@@ -19,14 +19,15 @@ final class AppThemeButton: UIButton {
     private let disposeBag = DisposeBag()
     private let theme: AppThemeButton.Theme
     private let title: String
-    private let _isEnabledRelay = BehaviorRelay<Bool>(value: false)
+    private let _isEnabledRelay: BehaviorRelay<Bool>
     
-    init(theme: Theme = .grayScale, title: String = "다음") {
+    init(theme: Theme = .grayScale, title: String = "다음", isEnabled: Bool = false) {
         self.theme = theme
         self.title = title
+        self._isEnabledRelay = BehaviorRelay<Bool>(value: isEnabled)
         super.init(frame: .zero)
         setupUI()
-        updateUI(isEnabled: false)
+        updateUI(isEnabled: isEnabled)
         bind()
     }
     
