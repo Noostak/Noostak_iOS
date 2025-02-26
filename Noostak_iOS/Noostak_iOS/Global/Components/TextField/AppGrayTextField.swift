@@ -1,8 +1,8 @@
 //
-//  AppColorTextField.swift
+//  AppGrayTextField.swift
 //  Noostak_iOS
 //
-//  Created by 박민서 on 1/7/25.
+//  Created by 박민서 on 1/6/25.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-final class AppColorTextField: UIView {
+final class AppGrayTextField: UIView {
     
     // MARK: Properties
     private let disposeBag = DisposeBag()
@@ -19,8 +19,9 @@ final class AppColorTextField: UIView {
     private var countLimit: Int?
     
     // MARK: Views
-    private let textField = PaddedTextField(padding: .init(top: 15, left: 12, bottom: 15, right: 12))
+    private let textField = PaddedTextField(padding: .init(top: 16, left: 16, bottom: 16, right: 16))
     private let countLabel = UILabel()
+    private let exampleLabel = UILabel()
     
     // MARK: Init
     override init(frame: CGRect) {
@@ -30,17 +31,12 @@ final class AppColorTextField: UIView {
         setUpLayout()
     }
     
-    init(placeholder: String? = nil, countLimit: Int? = nil) {
+    init(placeholder: String? = nil, countLimit: Int? = nil, exampleText: String? = nil) {
         self.countLimit = countLimit
         super.init(frame: .zero)
-        if let placeholder {
-            textField.setPlaceholder(
-                text: placeholder,
-                color: .appGray500,
-                font: .PretendardStyle.b1_sb.font
-            )
-        }
+        if let placeholder { textField.setPlaceholder(text: placeholder) }
         if let countLimit { setCountLabelBinding(limit: countLimit) }
+        if let exampleText { exampleLabel.attributedText = exampleText.pretendardStyled(style: .b5_r) }
         setUpHierarchy()
         setUpUI()
         setUpLayout()
@@ -55,24 +51,31 @@ final class AppColorTextField: UIView {
     private func setUpHierarchy() {
         [
             textField,
-            countLabel
+            countLabel,
+            exampleLabel
         ].forEach { self.addSubview($0) }
     }
     
     // MARK: setUpUI
     private func setUpUI() {
         textField.do {
-            $0.font = .PretendardStyle.b1_sb.font
-            $0.textColor = .appGray900
+            $0.font = .PretendardStyle.b5_r.font
+            $0.clearButtonMode = .whileEditing
+            $0.clearButtonRect(forBounds: .init(x: 0, y: 0, width: 20, height: 20))
             $0.borderStyle = .roundedRect
             $0.layer.cornerRadius = 8
             $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.appGray200.cgColor
+            $0.layer.borderColor = UIColor.appGray500.cgColor
         }
         
         countLabel.do {
             $0.font = .PretendardStyle.b5_r.font
-            $0.textColor = .appGray500
+            $0.textColor = .appGray800
+        }
+        
+        exampleLabel.do {
+            $0.font = .PretendardStyle.b5_r.font
+            $0.textColor = .appGray800
         }
     }
     
@@ -87,25 +90,37 @@ final class AppColorTextField: UIView {
             $0.trailing.bottom.equalToSuperview()
             $0.top.equalTo(textField.snp.bottom).offset(6)
         }
+        
+        exampleLabel.snp.makeConstraints {
+            $0.leading.bottom.equalToSuperview()
+            $0.top.equalTo(textField.snp.bottom).offset(6)
+        }
     }
     
     private func bind() {
         // Text 바인딩
         textField.rx.text.orEmpty
+            .distinctUntilChanged()
             .bind(to: textRelay)
+            .disposed(by: disposeBag)
+        
+        // textRelay 값이 변경되면 textField에도 반영
+        textRelay
+            .distinctUntilChanged()
+            .bind(to: textField.rx.text)
             .disposed(by: disposeBag)
         
         // Focus 상태 감지
         textField.rx.controlEvent([.editingDidBegin])
             .subscribe(onNext: { [weak self] in
-                self?.setUIColor(isFocused: true)
+                self?.textField.layer.borderColor = UIColor.appGray900.cgColor
             })
             .disposed(by: disposeBag)
         
         // Unfocus 상태 감지
         textField.rx.controlEvent([.editingDidEnd])
             .subscribe(onNext: { [weak self] in
-                self?.setUIColor(isFocused: false)
+                self?.textField.layer.borderColor = UIColor.appGray500.cgColor
             })
             .disposed(by: disposeBag)
     }
@@ -118,18 +133,10 @@ final class AppColorTextField: UIView {
             .bind(to: countLabel.rx.text)
             .disposed(by: disposeBag)
     }
-    
-    private func setUIColor(isFocused: Bool) {
-        if isFocused {
-            textField.layer.borderColor = UIColor.appBlue600.cgColor
-        } else {
-            let borderColor = textRelay.value.isEmpty ? UIColor.appGray200 : UIColor.appGray500
-            textField.layer.borderColor = borderColor.cgColor
-        }
-    }
 }
 
-extension AppColorTextField: AppTextFieldProtocol {
+extension AppGrayTextField: AppTextFieldProtocol {
+    
     var textRelay: BehaviorRelay<String> {
         return self.internalTextRelay
     }

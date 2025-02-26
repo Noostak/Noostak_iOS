@@ -19,13 +19,15 @@ final class AppThemeButton: UIButton {
     private let disposeBag = DisposeBag()
     private let theme: AppThemeButton.Theme
     private let title: String
+    private let _isEnabledRelay = BehaviorRelay<Bool>(value: false)
     
     init(theme: Theme = .grayScale, title: String = "다음") {
         self.theme = theme
         self.title = title
         super.init(frame: .zero)
         setupUI()
-        updateUI(for: .disable)
+        updateUI(isEnabled: false)
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -40,41 +42,23 @@ final class AppThemeButton: UIButton {
         self.setTitleColor(theme.foregroundColor, for: .normal)
     }
     
-    private func updateUI(for state: State) {
-        self.backgroundColor = theme.backgroundColor(state)
-        self.isEnabled = state.isEnabled
+    private func updateUI(isEnabled: Bool) {
+        self.backgroundColor = theme.backgroundColor(isEnabled)
+        self.isEnabled = isEnabled
     }
-}
-
-// MARK: - Interface
-extension AppThemeButton {
-    func bind(state: Observable<AppThemeButton.State>) {
-        state
+    
+    private func bind() {
+        isEnabledRelay
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] state in
-                self?.updateUI(for: state)
+            .subscribe(onNext: { [weak self] isEnabled in
+                self?.updateUI(isEnabled: isEnabled)
             })
             .disposed(by: disposeBag)
     }
 }
 
 extension AppThemeButton {
-
-    /// 버튼의 활성/비활성 상태
-    enum State {
-        case able
-        case disable
-        
-        var isEnabled: Bool {
-            switch self {
-            case .able:
-                return true
-            case .disable:
-                return false
-            }
-        }
-    }
     
     /// 버튼의 컬러 웨이
     enum Theme {
@@ -85,14 +69,31 @@ extension AppThemeButton {
             return .white
         }
         
-        func backgroundColor(_ state: AppThemeButton.State) -> UIColor {
-            switch state {
-                
-            case .able:
-                return self == .colorScale ? .appBlue600 : .appGray900
-            case .disable:
-                return .appGray500
-            }
+        func backgroundColor(_ availability: Bool) -> UIColor {
+            return availability
+            ? self == .colorScale ? .appBlue600 : .appGray900
+            : .appGray500
         }
+    }
+}
+
+// MARK: - Interface
+extension AppThemeButton {
+    var isEnabledRelay: BehaviorRelay<Bool> {
+        return _isEnabledRelay
+    }
+}
+
+// MARK: Rx Extension
+extension Reactive where Base: AppThemeButton {
+    var isEnabled: ControlProperty<Bool> {
+        let isEnabledRelay = base.isEnabledRelay
+
+        return ControlProperty(
+            values: isEnabledRelay.asObservable(),
+            valueSink: Binder(base) { button, state in
+                button.isEnabledRelay.accept(state)
+            }
+        )
     }
 }
