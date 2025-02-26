@@ -48,6 +48,8 @@ struct ExtendedSchedule {
     let startTime: String
     ///약속 종료시각(1순위, 확정)
     let endTime: String
+    ///나의 가능 여부
+    let myInfo: MemberStatus
     ///가능한 친구
     let availableMembers: [User]
     ///불가능한 친구
