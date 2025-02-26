@@ -61,7 +61,7 @@ final class LikeButton: UIButton {
         }
         
         countLabel.do {
-            $0.font = .PretendardStyle.c2_sb.font
+            $0.font = .PretendardStyle.c3_sb.font
         }
         
         self.do {

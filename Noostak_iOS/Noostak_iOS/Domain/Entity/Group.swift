@@ -14,8 +14,10 @@ struct Group {
     let code: String
     ///그룹 멤버수
     let membersCount: Int
+    ///그룹 이미지
+    let groupImage: String
     ///방장
-    let leader: User
+    let host: User
     ///멤버
     let members: [User]
 }

@@ -46,6 +46,7 @@ extension UIFont {
         case h1_sb
         case h2_b
         case h3_sb
+        case h3_22_SB
         case h4_b
         case h4_sb
         case h5_b
@@ -60,17 +61,19 @@ extension UIFont {
         case b4_r
         case b5_r
         case c1_b
-        case c2_sb
+        case c3_sb
         case c3_r
         case c4_r
-
+        case c5_r
+        
         var font: UIFont {
             switch self {
-            case .h1_b: return UIFont.pretendard(.bold, size: 56)
-            case .h1_sb: return UIFont.pretendard(.semibold, size: 56)
-            case .h2_b: return UIFont.pretendard(.bold, size: 27)
+            case .h1_b: return UIFont.pretendard(.bold, size: 27)
+            case .h1_sb: return UIFont.pretendard(.semibold, size: 27)
+            case .h2_b: return UIFont.pretendard(.bold, size: 24)
             case .h3_sb: return UIFont.pretendard(.semibold, size: 24)
-            case .h4_b: return UIFont.pretendard(.bold, size: 24)
+            case .h3_22_SB: return UIFont.pretendard(.semibold, size: 22)
+            case .h4_b: return UIFont.pretendard(.bold, size: 20)
             case .h4_sb: return UIFont.pretendard(.semibold, size: 20)
             case .h5_b: return UIFont.pretendard(.bold, size: 18)
             case .t1_sb: return UIFont.pretendard(.semibold, size: 18)
@@ -84,18 +87,19 @@ extension UIFont {
             case .b4_r: return UIFont.pretendard(.regular, size: 15)
             case .b5_r: return UIFont.pretendard(.regular, size: 14)
             case .c1_b: return UIFont.pretendard(.bold, size: 13)
-            case .c2_sb: return UIFont.pretendard(.semibold, size: 13)
+            case .c3_sb: return UIFont.pretendard(.semibold, size: 13)
             case .c3_r: return UIFont.pretendard(.regular, size: 13)
             case .c4_r: return UIFont.pretendard(.regular, size: 11)
+            case .c5_r: return UIFont.pretendard(.regular, size: 10)
             }
         }
-
+        
         // Line Height (LHLHUnit)
         var lineHeightUnit: CGFloat {
             switch self {
-            case .h1_b, .h1_sb, .h2_b, .h3_sb, .h4_b, .h4_sb, .h5_b,
-                 .t1_sb, .t2_r, .t3_b, .t4_b, .b1_sb, .b2_r, .b4_sb,
-                 .b4_sb_1percent, .b4_r, .b5_r, .c1_b, .c2_sb, .c3_r, .c4_r:
+            case .h1_b, .h1_sb, .h2_b, .h3_sb, .h3_22_SB, .h4_b, .h4_sb, .h5_b,
+                    .t1_sb, .t2_r, .t3_b, .t4_b, .b1_sb, .b2_r, .b4_sb,
+                    .b4_sb_1percent, .b4_r, .b5_r, .c1_b, .c3_sb, .c3_r, .c4_r, .c5_r:
                 return 140
             }
         }

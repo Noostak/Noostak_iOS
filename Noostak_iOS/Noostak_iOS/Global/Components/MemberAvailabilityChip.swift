@@ -29,6 +29,13 @@ final class MemberAvailabilityChip: UIView {
         setUpLayout()
     }
     
+    func update(name: String, status: MemberStatus) {
+        self.chipLabel.text = name
+        self.status = status
+        setUpUI()
+        setUpLayout()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -42,7 +49,7 @@ final class MemberAvailabilityChip: UIView {
     private func setUpUI() {
         
         self.do {
-            $0.layer.cornerRadius = 16
+            $0.layer.cornerRadius = 15
             $0.layer.borderWidth = 1
             
             switch status {
@@ -69,7 +76,7 @@ final class MemberAvailabilityChip: UIView {
     private func setUpLayout() {
         self.snp.makeConstraints {
             if status == .myself {
-                $0.width.equalTo(28)
+                $0.width.equalTo(39)
             }
             $0.height.equalTo(30)
         }
