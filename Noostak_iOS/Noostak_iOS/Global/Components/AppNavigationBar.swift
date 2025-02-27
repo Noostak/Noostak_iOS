@@ -32,6 +32,18 @@ final class AppNavigationBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.snp.updateConstraints {
+            $0.height.equalTo(AppNavigationBar.navBarHeight + UIScreen.safeAreaTop)
+        }
+        
+        titleLabel.snp.updateConstraints {
+            $0.top.equalToSuperview().offset(AppNavigationBar.navBarHeight/2 + UIScreen.safeAreaTop)
+        }
+    }
+    
     // MARK: setUpHierarchy
     private func setUpHierarchy() {
         self.addSubviews(leftButton, titleLabel, rightButton)
@@ -59,13 +71,13 @@ final class AppNavigationBar: UIView {
     // MARK: setUpLayout
     private func setUpLayout() {
         self.snp.makeConstraints {
-            $0.height.equalTo(AppNavigationBar.navBarHeight + .safeAreaTop)
+            $0.height.equalTo(AppNavigationBar.navBarHeight)
             $0.width.equalTo(UIScreen.main.bounds.width)
         }
         
         titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().offset(AppNavigationBar.navBarHeight/2 + .safeAreaTop)
+            $0.top.equalToSuperview().offset(AppNavigationBar.navBarHeight/2)
         }
         
         leftButton.snp.makeConstraints {
@@ -80,7 +92,10 @@ final class AppNavigationBar: UIView {
             $0.size.equalTo(AppNavigationBar.buttonSize)
         }
     }
-    
+}
+
+// MARK: Interface
+extension AppNavigationBar {
     /// 제목 설정
     func setTitle(_ text: String) {
         titleLabel.text = text
