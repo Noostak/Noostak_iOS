@@ -19,6 +19,7 @@ final class OverlayManager {
     private var toastWindow: UIWindow?
     private var toastQueue: [(AppToastView, TimeInterval)] = []
     private var isShowingToast = false
+    private var dismissWorkItem: DispatchWorkItem?
     
     private init() {}
 }
@@ -108,12 +109,17 @@ extension OverlayManager {
         }
         
         // 애니메이션 (페이드 인 -> 유지 -> 페이드 아웃)
-        UIView.animate(withDuration: 0.25, animations: {
+        UIView.animate(withDuration: 0.25) {
             toastView.alpha = 1
-        }) { _ in
-            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-                self.dismissToast(toastView)
-            }
+        }
+        
+        // dismiss 예약
+        dismissWorkItem = DispatchWorkItem { [weak self] in
+            self?.dismissToast(toastView)
+        }
+        
+        if let dismissWorkItem {
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: dismissWorkItem)
         }
     }
     
@@ -152,6 +158,7 @@ extension OverlayManager {
                   let currentToast = containerView.subviews.first as? AppToastView else {
                 return
             }
+            self.dismissWorkItem?.cancel()
             
             UIView.animate(withDuration: 0.25, animations: {
                 currentToast.alpha = 0
