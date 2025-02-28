@@ -11,10 +11,6 @@ import SnapKit
 
 final class MyPageView: UIView {
     
-    // MARK: Properties
-    private let name: String
-    private let profileImageURL: String
-    
     // MARK: Views
     private let topBar = AppNavigationBar()
     private lazy var profileStackView = UIStackView(arrangedSubviews: [profileImageView, nameLabel])
@@ -27,9 +23,7 @@ final class MyPageView: UIView {
     let withdrawItem = MyPageListItemView()
     
     // MARK: Init
-    init(name: String, profileImageURL: String) {
-        self.name = name
-        self.profileImageURL = profileImageURL
+    init() {
         super.init(frame: .zero)
         setUpFoundation()
         setUpHierarchy()
@@ -74,7 +68,6 @@ final class MyPageView: UIView {
         }
         
         nameLabel.do {
-            $0.text = name
             $0.font = .PretendardStyle.t4_b.font
             $0.textColor = .appGray900
         }

@@ -16,13 +16,9 @@ final class MyPageViewController: UIViewController, View {
     var disposeBag = DisposeBag()
     
     // MARK: Views
-    private let rootView: MyPageView
+    private let rootView = MyPageView()
     
     init(reactor: MyPageReactor) {
-        rootView = MyPageView(
-            name: reactor.currentState.name,
-            profileImageURL: reactor.currentState.imageURL
-        )
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
