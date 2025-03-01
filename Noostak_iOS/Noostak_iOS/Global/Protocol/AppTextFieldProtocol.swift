@@ -12,7 +12,7 @@ import RxCocoa
 
 protocol AppTextFieldProtocol: UIView {
     /// 텍스트 필드 텍스트 상태
-    var textRelay: BehaviorRelay<String> { get }
+    var textRelay: PublishRelay<String> { get }
     /// 텍스트 필드 포커스 되었는지
     var isFocused: Bool { get }
     /// 텍스트 필드 포커스하기

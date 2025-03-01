@@ -15,7 +15,7 @@ final class AppColorUnderlineTextField: UIView {
     
     // MARK: Properties
     private let disposeBag = DisposeBag()
-    private let internalTextRelay: BehaviorRelay<String> = .init(value: "")
+    private let internalTextRelay: PublishRelay<String> = .init()
     private var countLimit: Int?
     
     // MARK: Views
@@ -106,25 +106,31 @@ final class AppColorUnderlineTextField: UIView {
             .disposed(by: disposeBag)
         
         // Focus 상태 감지
-        textField.rx.controlEvent([.editingDidBegin])
-            .subscribe(onNext: { [weak self] in
-                self?.setUIColor(isFocused: true)
-            })
+        Observable.combineLatest(
+            textField.rx.controlEvent([.editingDidBegin]),
+            textRelay
+        ) { $1 }
+            .bind { [weak self] text in
+                self?.setUIColor(text: text, isFocused: true)
+            }
             .disposed(by: disposeBag)
         
         // Unfocus 상태 감지
-        textField.rx.controlEvent([.editingDidEnd])
-            .subscribe(onNext: { [weak self] in
-                self?.setUIColor(isFocused: false)
-            })
+        Observable.combineLatest(
+            textField.rx.controlEvent([.editingDidEnd]),
+            textRelay
+        ) { $1 }
+            .bind { [weak self] text in
+                self?.setUIColor(text: text, isFocused: false)
+            }
             .disposed(by: disposeBag)
     }
     
-    private func setUIColor(isFocused: Bool) {
+    private func setUIColor(text: String, isFocused: Bool) {
         if isFocused {
             underLine.backgroundColor = UIColor.appBlue600
         } else {
-            let textColor = textRelay.value.isEmpty ? UIColor.appGray200 : UIColor.appGray500
+            let textColor = text.isEmpty ? UIColor.appGray200 : UIColor.appGray500
             underLine.backgroundColor = textColor
         }
     }
@@ -132,7 +138,7 @@ final class AppColorUnderlineTextField: UIView {
 
 extension AppColorUnderlineTextField: AppTextFieldProtocol {
     
-    var textRelay: BehaviorRelay<String> {
+    var textRelay: PublishRelay<String> {
         return self.internalTextRelay
     }
     
