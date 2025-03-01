@@ -9,10 +9,15 @@ import RxSwift
 
 protocol UserUseCaseProtocol {
     func validate(name: String) -> Observable<ValidationResult>
+    func validate(groupName: String) -> Observable<ValidationResult>
 }
 
 final class UserUseCase: UserUseCaseProtocol {
     func validate(name: String) -> Observable<ValidationResult> {
         return Observable.just(SignUpValidator.validate(name: name))
+    }
+    
+    func validate(groupName: String) -> Observable<ValidationResult> {
+        return Observable.just(SignUpValidator.validate(groupName: groupName))
     }
 }
