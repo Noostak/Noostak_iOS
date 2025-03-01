@@ -10,6 +10,7 @@ import SnapKit
 import Then
 import RxSwift
 import RxCocoa
+import Kingfisher
 
 // MARK: Component Interface
 protocol ProfileImagePickerProtocol: UIView {
@@ -95,12 +96,32 @@ extension ProfileImagePicker: ProfileImagePickerProtocol {
     }
     
     func setProfileImageView(with profileImage: UIImage?) {
+        profileImageView.kf.cancelDownloadTask()
         if let profileImage {
             profileImageView.image = profileImage
             profileImageView.layer.borderColor = UIColor.appGray600.cgColor
         } else {
             profileImageView.image = .imgProfileFilled
             profileImageView.layer.borderColor = UIColor.clear.cgColor
+        }
+    }
+    
+    func setProfileImageURL(with url: URL?) {
+        guard let url else {
+            setProfileImageView(with: nil)
+            return
+        }
+        
+        profileImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(resource: .imgProfileFilled)
+        ) { [weak self] result in
+            switch result {
+            case .success:
+                self?.profileImageView.layer.borderColor = UIColor.appGray600.cgColor
+            case .failure:
+                self?.setProfileImageView(with: nil)
+            }
         }
     }
     
