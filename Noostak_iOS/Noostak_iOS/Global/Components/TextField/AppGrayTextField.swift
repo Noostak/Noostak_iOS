@@ -15,7 +15,7 @@ final class AppGrayTextField: UIView {
     
     // MARK: Properties
     private let disposeBag = DisposeBag()
-    private let internalTextRelay: BehaviorRelay<String> = .init(value: "")
+    private let internalTextRelay: PublishRelay<String> = .init()
     private var countLimit: Int?
     
     // MARK: Views
@@ -137,7 +137,7 @@ final class AppGrayTextField: UIView {
 
 extension AppGrayTextField: AppTextFieldProtocol {
     
-    var textRelay: BehaviorRelay<String> {
+    var textRelay: PublishRelay<String> {
         return self.internalTextRelay
     }
     

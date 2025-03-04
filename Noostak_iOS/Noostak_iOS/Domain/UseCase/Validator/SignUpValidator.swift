@@ -24,4 +24,13 @@ struct SignUpValidator {
         
         return .valid
     }
+    
+    static func validate(groupName: String) -> ValidationResult {
+        // 30자 제한
+        guard (1...30).contains(groupName.count) else {
+            return .invalid(reason: "그룹 이름은 1~30자로 입력해야 합니다.")
+        }
+        
+        return .valid
+    }
 }

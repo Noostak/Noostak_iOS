@@ -20,7 +20,7 @@ final class AppColorTextField: UIView {
     
     // MARK: Properties
     private let disposeBag = DisposeBag()
-    private let internalTextRelay: BehaviorRelay<String> = .init(value: "")
+    private let internalTextRelay: PublishRelay<String> = .init()
     private let internalStateRelay: BehaviorRelay<TextFieldState> = .init(value: .valid)
     private let focusStateRelay: BehaviorRelay<Bool> = .init(value: false)
     private var countLimit: Int?
@@ -217,7 +217,7 @@ extension AppColorTextField {
 }
 
 extension AppColorTextField: AppTextFieldProtocol {
-    var textRelay: BehaviorRelay<String> {
+    var textRelay: PublishRelay<String> {
         return self.internalTextRelay
     }
     

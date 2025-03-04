@@ -65,6 +65,7 @@ extension UIFont {
         case c3_r
         case c4_r
         case c5_r
+        case code_m
         
         var font: UIFont {
             switch self {
@@ -91,6 +92,7 @@ extension UIFont {
             case .c3_r: return UIFont.pretendard(.regular, size: 13)
             case .c4_r: return UIFont.pretendard(.regular, size: 11)
             case .c5_r: return UIFont.pretendard(.regular, size: 10)
+            case .code_m: return UIFont.pretendard(.medium, size: 56)
             }
         }
         
@@ -101,6 +103,8 @@ extension UIFont {
                     .t1_sb, .t2_r, .t3_b, .t4_b, .b1_sb, .b2_r, .b4_sb,
                     .b4_sb_1percent, .b4_r, .b5_r, .c1_b, .c3_sb, .c3_r, .c4_r, .c5_r:
                 return 140
+            case .code_m:
+                return 120
             }
         }
 
@@ -108,6 +112,7 @@ extension UIFont {
         var letterSpacingUnit: CGFloat {
             switch self {
             case .h1_b: return 10
+            case .code_m: return 8
             default: return 0
             }
         }
