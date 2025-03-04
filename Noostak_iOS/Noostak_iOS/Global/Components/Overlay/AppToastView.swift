@@ -95,14 +95,8 @@ extension AppToastView {
             case .default(let message):
                 return message.pretendardStyled(style: .c3_r, color: .appWhite)
             case .error(let message):
-                // TODO: 폰트 시스템 C3_SB 추가되면 수정
-                return message.pretendardStyled(style: .c3_r, color: .appRed01)
+                return message.pretendardStyled(style: .c3_sb, color: .appRed01)
             }
         }
     }
-}
-
-#Preview {
-//    AppToastView(status: .default(message: "그룹 코드가 복사되었습니다"))
-    AppToastView(status: .error(message: "최대 7일까지 선택할 수 있어요"))
 }

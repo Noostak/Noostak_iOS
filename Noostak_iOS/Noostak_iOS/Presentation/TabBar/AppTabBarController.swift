@@ -65,7 +65,7 @@ final class AppTabBarController: UITabBarController {
         setViewControllers([
             ViewController(),
             SignUpViewController(reactor: .init(userUseCase: UserUseCase())),
-            ViewController()
+            MyPageViewController(reactor: .init())
         ], animated: false)
     }
     
