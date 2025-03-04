@@ -55,7 +55,7 @@ final class AppPopUpView: UIView {
             OverlayManager.shared.dismissPopup()
         }), for: .touchUpInside)
     }
-
+    
     // MARK: setUpHierarchy
     private func setUpHierarchy(isSecondary: Bool) {
         if isSecondary {
@@ -93,7 +93,7 @@ final class AppPopUpView: UIView {
         
         primaryButton.do {
             $0.setAttributedTitle(primaryTitle.pretendardStyled(style: .c3_sb, color: .appBlue), for: .normal)
-            }
+        }
         
         horizontalDivider.do {
             $0.backgroundColor = .appGray200
@@ -109,7 +109,7 @@ final class AppPopUpView: UIView {
             }
         }
     }
-
+    
     // MARK: setUpLayout
     private func setUpLayout(isSecondary: Bool) {
         messageLabel.snp.makeConstraints {
