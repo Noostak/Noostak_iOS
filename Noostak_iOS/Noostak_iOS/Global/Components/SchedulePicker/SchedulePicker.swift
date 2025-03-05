@@ -42,18 +42,6 @@ final class SchedulePicker: UICollectionView {
     }
     
     // MARK: Public Methods
-    func addSelectedCell(at indexPath: IndexPath) {
-        guard mode == .editMode,
-              let cell = cellForItem(at: indexPath) as? SchedulePickerCell
-        else { return }
-        cell.isSelectedCell.toggle()
-        if cell.isSelectedCell {
-            selectedCells.insert(indexPath)
-        } else {
-            selectedCells.remove(indexPath)
-        }
-    }
-    
     func configureCellBackground(_ cell: SchedulePickerCell, for indexPath: IndexPath, participants: Int) {
         guard mode == .readMode else { return }
         let count = cellAvailability[indexPath, default: 0]
