@@ -8,7 +8,6 @@
 import UIKit
 
 import Then
-import SnapKit
 
 import RxSwift
 import RxCocoa
@@ -27,12 +26,20 @@ final class NSTPickerView: UIPickerView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        delegate = self
-        dataSource = self
+        
+        setDelegate()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    // MARK: - Method
+
+    private func setDelegate() {
+        delegate = self
+        dataSource = self
     }
 }
 
