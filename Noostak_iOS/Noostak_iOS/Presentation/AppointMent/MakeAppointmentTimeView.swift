@@ -175,6 +175,7 @@ final class MakeAppointmentTimeView: UIView {
         startTimeLabel.rx.tap
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
+                
                 self.timeSelectMode = .start
                 self.updateUI()
             })
@@ -183,6 +184,7 @@ final class MakeAppointmentTimeView: UIView {
         endTimeLabel.rx.tap
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
+                
                 self.timeSelectMode = .end
                 self.updateUI()
             })
