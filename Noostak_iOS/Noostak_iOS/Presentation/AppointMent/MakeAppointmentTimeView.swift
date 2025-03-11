@@ -112,15 +112,21 @@ final class MakeAppointmentTimeView: UIView {
         setHierarchy()
         setLayout()
         bind()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.reset()
+        }
     }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI & Layout
-    
+}
+
+// MARK: - UI & Layout
+
+extension MakeAppointmentTimeView {
     private func setUI() {
         backgroundColor = .white
         contentView.layer.cornerRadius = 20
@@ -205,8 +211,23 @@ final class MakeAppointmentTimeView: UIView {
             endPicker.isHidden = false
         }
     }
-    
 }
+
+// MARK: - Method
+
+extension MakeAppointmentTimeView {
+    // 피커뷰 초기화 코드 추가 (시간대는 상관 없어요 버튼 생각)
+    func reset() {
+        timeSelectMode = .start
+        
+        startPicker.resetTime()
+        endPicker.resetTime()
+        
+        updateUI()
+    }
+}
+
+// MARK: - Reactive
 
 /// 버튼이 아닌 Label tap했을때 Reactive 입니다.
 /// label.rx.tap 으로 이벤트 방출

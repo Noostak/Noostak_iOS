@@ -32,12 +32,16 @@ final class NSTPickerView: UIPickerView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     // MARK: - Method
     
     private func setDelegate() {
         delegate = self
         dataSource = self
+    }
+    
+    func resetTime() {
+        self.selectRow(0, inComponent: 0, animated: false)
+        self.selectedTimeRelay.accept("00:00")
     }
 }
 
@@ -56,7 +60,6 @@ extension NSTPickerView: UIPickerViewDataSource {
 // MARK: - UIPickerViewDelegate
 
 extension NSTPickerView: UIPickerViewDelegate {
-    
     func pickerView(
         _ pickerView: UIPickerView,
         viewForRow row: Int,
@@ -103,10 +106,10 @@ extension NSTPickerView: UIPickerViewDelegate {
         let newTime = times[row]
         selectedTimeRelay.accept(newTime)
     }
-    
 }
 
-// MARK: - Rx Extension
+// MARK: - Reactive
+
 extension Reactive where Base: NSTPickerView {
     
     var time: ControlProperty<String> {
