@@ -65,7 +65,7 @@ extension NSTPickerView: UIPickerViewDelegate {
             $0.axis = .horizontal
             $0.alignment = .center
             $0.distribution = .fillEqually
-            $0.spacing = 40
+            $0.spacing = 80
         }
         
         let hourLabel = UILabel().then {
