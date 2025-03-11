@@ -5,13 +5,98 @@
 //  Created by 이명진 on 3/11/25.
 //
 
-import Foundation
-
 import UIKit
+
+import Then
+import SnapKit
+
+import RxSwift
+import RxCocoa
+
+enum TimeSelectorType {
+    case start
+    case end
+}
 
 final class MakeAppointmentTimeView: UIView {
     
+    // MARK: - Properties
+    
+    private let disposeBag = DisposeBag()
+    
     // MARK: - UIComponents
+    
+    private let contentView = UIView().then {
+        $0.backgroundColor = .appGray50Bg
+    }
+    
+    private let waveLabel = UILabel().then {
+        $0.text = "~"
+        $0.font = .PretendardStyle.h1_b.font
+        $0.textColor = .appGray600
+    }
+    
+    private let startPicker = NSTPickerView()
+    
+    private let endPicker = NSTPickerView().then {
+        $0.isHidden = true
+    }
+    
+    private let startLabel = UILabel().then {
+        $0.text = "약속 시작 시간"
+        $0.font = .PretendardStyle.c3_sb.font
+        $0.textColor = .appGray700
+    }
+    
+    private let startTimeLabel = UILabel().then {
+        $0.font = .PretendardStyle.h1_b.font
+        $0.text = "12:00"
+        $0.textColor = .appBlue600
+    }
+    
+    private let endLabel = UILabel().then {
+        $0.text = "약속 종료 시간"
+        $0.font = .PretendardStyle.c3_sb.font
+        $0.textColor = .appGray700
+    }
+    
+    private let endTimeLabel = UILabel().then {
+        $0.font = .PretendardStyle.h1_b.font
+        $0.text = "13:00"
+    }
+    
+    private lazy var startTimeStackView = UIStackView(
+        arrangedSubviews: [
+            startLabel,
+            startTimeLabel
+        ]
+    ).then {
+        $0.axis = .vertical
+        $0.spacing = 0
+    }
+    
+    private lazy var endTimeStackView = UIStackView(
+        arrangedSubviews: [
+            endLabel,
+            endTimeLabel
+        ]
+    ).then {
+        $0.axis = .vertical
+        $0.spacing = 0
+    }
+    
+    private lazy var topViewStackView = UIStackView(
+        arrangedSubviews: [
+            startTimeStackView,
+            waveLabel,
+            endTimeStackView
+        ]
+    ).then {
+        $0.axis = .horizontal
+        $0.spacing = 20
+    }
+    
+    private var timeSelectMode: TimeSelectorType = .start
     
     // MARK: - Life Cycles
     
@@ -21,6 +106,7 @@ final class MakeAppointmentTimeView: UIView {
         setUI()
         setHierarchy()
         setLayout()
+        bind()
     }
     
     @available(*, unavailable)
@@ -32,15 +118,100 @@ final class MakeAppointmentTimeView: UIView {
     
     private func setUI() {
         backgroundColor = .white
+        contentView.layer.cornerRadius = 20
     }
     
     private func setHierarchy() {
+        self.addSubview(contentView)
         
+        contentView.addSubviews(
+            topViewStackView,
+            startPicker,
+            endPicker
+        )
     }
     
     private func setLayout() {
+        contentView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.height.equalTo(316)
+            $0.width.equalTo(343)
+        }
         
+        topViewStackView.snp.makeConstraints {
+            $0.top.equalTo(contentView.snp.top).offset(30)
+            $0.centerX.equalToSuperview()
+        }
+        
+        startPicker.snp.makeConstraints {
+            $0.top.equalTo(topViewStackView.snp.bottom).offset(10)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(161)
+            $0.width.equalTo(178)
+        }
+        
+        endPicker.snp.makeConstraints {
+            $0.top.equalTo(topViewStackView.snp.bottom).offset(10)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(161)
+            $0.width.equalTo(178)
+        }
+    }
+    
+    private func bind() {
+        startPicker.rx.time
+            .bind(to: startTimeLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        endPicker.rx.time
+            .bind(to: endTimeLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        startTimeLabel.rx.tap
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.timeSelectMode = .start
+                self.updateUI()
+            })
+            .disposed(by: disposeBag)
+        
+        endTimeLabel.rx.tap
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.timeSelectMode = .end
+                self.updateUI()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func updateUI() {
+        switch timeSelectMode {
+        case .start:
+            startTimeLabel.textColor = .appBlue600
+            endTimeLabel.textColor = .appGray700
+            startPicker.isHidden = false
+            endPicker.isHidden = true
+        case .end:
+            startTimeLabel.textColor = .appGray700
+            endTimeLabel.textColor = .appBlue600
+            startPicker.isHidden = true
+            endPicker.isHidden = false
+        }
     }
     
 }
 
+/// 버튼이 아닌 Label tap했을때 Reactive 입니다.
+/// label.rx.tap 으로 이벤트 방출
+/// 터치가 끝났을 때, 이벤트를 방출해 줍니다.
+extension Reactive where Base: UILabel {
+    var tap: ControlEvent<Void> {
+        let tapGesture = UITapGestureRecognizer()
+        base.addGestureRecognizer(tapGesture)
+        base.isUserInteractionEnabled = true
+        let source = tapGesture.rx.event
+            .filter { $0.state == .ended }  // 터치가 끝났을 때만 이벤트 방출
+            .map { _ in }
+        return ControlEvent(events: source)
+    }
+}
