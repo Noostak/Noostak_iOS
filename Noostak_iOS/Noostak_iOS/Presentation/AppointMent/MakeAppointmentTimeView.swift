@@ -24,6 +24,11 @@ final class MakeAppointmentTimeView: UIView {
     
     private let disposeBag = DisposeBag()
     
+    // 약속 시작 시간, 약속 종료 시간
+    fileprivate lazy var selectedTimeRange: Observable<(String, String)> = {
+        return Observable.combineLatest(self.startPicker.rx.time, self.endPicker.rx.time)
+    }()
+    
     // MARK: - UIComponents
     
     private let contentView = UIView().then {
@@ -213,5 +218,12 @@ extension Reactive where Base: UILabel {
             .filter { $0.state == .ended }  // 터치가 끝났을 때만 이벤트 방출
             .map { _ in }
         return ControlEvent(events: source)
+    }
+}
+
+/// 약속 시작 시간, 약속 종료 시간를 Reactive로 받습니다.
+extension Reactive where Base: MakeAppointmentTimeView {
+    var appointmentTimeRange: Observable<(String, String)> {
+        return base.selectedTimeRange
     }
 }
