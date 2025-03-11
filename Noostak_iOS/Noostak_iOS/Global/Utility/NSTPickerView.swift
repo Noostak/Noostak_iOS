@@ -18,9 +18,7 @@ final class NSTPickerView: UIPickerView {
     
     fileprivate let selectedTimeRelay = BehaviorRelay<String>(value: "00:00")
     
-    fileprivate let times: [String] = (0...24).map { hour -> String in
-        String(format: "%02d:00", hour)
-    }
+    fileprivate let times: [String] = (0...24).map { String(format: "%02d:00", $0) }
     
     // MARK: - Init
     
@@ -36,7 +34,7 @@ final class NSTPickerView: UIPickerView {
     
     
     // MARK: - Method
-
+    
     private func setDelegate() {
         delegate = self
         dataSource = self
@@ -59,10 +57,12 @@ extension NSTPickerView: UIPickerViewDataSource {
 
 extension NSTPickerView: UIPickerViewDelegate {
     
-    func pickerView(_ pickerView: UIPickerView,
-                    viewForRow row: Int,
-                    forComponent component: Int,
-                    reusing view: UIView?) -> UIView {
+    func pickerView(
+        _ pickerView: UIPickerView,
+        viewForRow row: Int,
+        forComponent component: Int,
+        reusing view: UIView?
+    ) -> UIView {
         let timeString = times[row]
         let components = timeString.split(separator: ":")
         let hourText = String(components[0])  // 시간
