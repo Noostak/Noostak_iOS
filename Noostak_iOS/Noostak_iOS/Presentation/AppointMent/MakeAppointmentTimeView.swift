@@ -103,6 +103,10 @@ final class MakeAppointmentTimeView: UIView {
     
     private var timeSelectMode: TimeSelectorType = .start
     
+    private let dummyLine = UIView().then {
+        $0.backgroundColor = .appGray100
+    }
+    
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
@@ -137,6 +141,7 @@ extension MakeAppointmentTimeView {
         
         contentView.addSubviews(
             topViewStackView,
+            dummyLine,
             startPicker,
             endPicker
         )
@@ -145,7 +150,7 @@ extension MakeAppointmentTimeView {
     private func setLayout() {
         contentView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.height.equalTo(316)
+            $0.height.equalTo(307)
             $0.width.equalTo(343)
         }
         
@@ -154,17 +159,23 @@ extension MakeAppointmentTimeView {
             $0.centerX.equalToSuperview()
         }
         
+        dummyLine.snp.makeConstraints {
+            $0.top.equalTo(topViewStackView.snp.bottom).offset(9)
+            $0.horizontalEdges.equalToSuperview().inset(41)
+            $0.height.equalTo(3)
+        }
+        
         startPicker.snp.makeConstraints {
-            $0.top.equalTo(topViewStackView.snp.bottom).offset(10)
+            $0.top.equalTo(dummyLine.snp.bottom).offset(30)
             $0.centerX.equalToSuperview()
-            $0.height.equalTo(161)
+            $0.height.equalTo(152)
             $0.width.equalTo(178)
         }
         
         endPicker.snp.makeConstraints {
             $0.top.equalTo(topViewStackView.snp.bottom).offset(10)
             $0.centerX.equalToSuperview()
-            $0.height.equalTo(161)
+            $0.height.equalTo(152)
             $0.width.equalTo(178)
         }
     }
