@@ -119,9 +119,6 @@ final class MakeAppointmentTimeView: UIView {
         setLayout()
         bind()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.reset()
-        }
     }
     
     @available(*, unavailable)
