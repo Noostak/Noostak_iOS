@@ -43,9 +43,9 @@ final class MakeAppointmentTimeView: UIView {
         $0.textColor = .appGray600
     }
     
-    private let startPicker = NSTPickerView()
+    private let startPicker = CustomTimePickerView()
     
-    private let endPicker = NSTPickerView().then {
+    private let endPicker = CustomTimePickerView().then {
         $0.isHidden = true
     }
     

@@ -1,5 +1,5 @@
 //
-//  NSTPickerView.swift
+//  CustomTimePickerView.swift
 //  Noostak_iOS
 //
 //  Created by 이명진 on 3/11/25.
@@ -12,7 +12,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-final class NSTPickerView: UIPickerView {
+final class CustomTimePickerView: UIPickerView {
     
     // MARK: - Properties
     
@@ -47,7 +47,7 @@ final class NSTPickerView: UIPickerView {
 
 // MARK: - UIPickerViewDataSource
 
-extension NSTPickerView: UIPickerViewDataSource {
+extension CustomTimePickerView: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -59,7 +59,7 @@ extension NSTPickerView: UIPickerViewDataSource {
 
 // MARK: - UIPickerViewDelegate
 
-extension NSTPickerView: UIPickerViewDelegate {
+extension CustomTimePickerView: UIPickerViewDelegate {
     func pickerView(
         _ pickerView: UIPickerView,
         viewForRow row: Int,
@@ -110,7 +110,7 @@ extension NSTPickerView: UIPickerViewDelegate {
 
 // MARK: - Reactive
 
-extension Reactive where Base: NSTPickerView {
+extension Reactive where Base: CustomTimePickerView {
     
     var time: ControlProperty<String> {
         let source = base.selectedTimeRelay.asObservable()
