@@ -13,12 +13,14 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-enum TimeSelectorType {
-    case start
-    case end
-}
-
 final class MakeAppointmentTimeView: UIView {
+    
+    // MARK: - TimeSelectorType
+
+    enum TimeSelectorType {
+        case start
+        case end
+    }
     
     // MARK: - Properties
     
