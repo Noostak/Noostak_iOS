@@ -49,7 +49,9 @@ final class GroupMemberViewController: UIViewController, View {
     func bind(reactor: GroupMemberReactor) {
         let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, User>>(
             configureCell: { _, collectionView, indexPath, user in
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupMemberCVC.identifier, for: indexPath) as! GroupMemberCVC
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupMemberCVC.identifier, for: indexPath) as? GroupMemberCVC else {
+                    return UICollectionViewCell()
+                }
                 let cellReactor = GroupMemberCellReactor(user: user)
                 cell.reactor = cellReactor
                 return cell

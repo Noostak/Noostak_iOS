@@ -49,7 +49,7 @@ final class ScheduleConfirmedViewController: UIViewController, View {
         let unavailableFlowLayout = LeftAlignedFlowLayout()
         unavailableFlowLayout.minimumInteritemSpacing = 10
         unavailableFlowLayout.minimumLineSpacing = 10
-
+        
         rootView.scheduleInfoView.availableCollectionView.setCollectionViewLayout(availableFlowLayout, animated: false)
         rootView.scheduleInfoView.unavailableCollectionView.setCollectionViewLayout(unavailableFlowLayout, animated: false)
         
@@ -66,7 +66,7 @@ final class ScheduleConfirmedViewController: UIViewController, View {
         rootView.scheduleInfoView.unavailableCollectionView.snp.makeConstraints { make in
             make.height.equalTo(0)
         }
-
+        
         rootView.scheduleInfoView.availableCollectionView.rx.observe(CGSize.self, "contentSize")
             .subscribe(onNext: { [weak self] size in
                 guard let height = size?.height, height > 0, let self = self else { return }
@@ -76,7 +76,7 @@ final class ScheduleConfirmedViewController: UIViewController, View {
                 self.rootView.layoutIfNeeded()
             })
             .disposed(by: disposeBag)
-
+        
         rootView.scheduleInfoView.unavailableCollectionView.rx.observe(CGSize.self, "contentSize")
             .subscribe(onNext: { [weak self] size in
                 guard let height = size?.height, height > 0, let self = self else { return }
@@ -94,20 +94,24 @@ final class ScheduleConfirmedViewController: UIViewController, View {
         var unavailableMembers = reactor.currentState.unavailableMembers
         
         myStatus == .available ? availableMembers.insert(User(name: "나", userImage: ""), at: 0) :
-                                unavailableMembers.insert(User(name: "나", userImage: ""), at: 0)
+        unavailableMembers.insert(User(name: "나", userImage: ""), at: 0)
         
         let availableDataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, User>>(
             configureCell: { _, collectionView, indexPath, user in
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberAvailabilityCVC.identifier, for: indexPath) as! MemberAvailabilityCVC
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberAvailabilityCVC.identifier, for: indexPath) as? MemberAvailabilityCVC else {
+                    return UICollectionViewCell()
+                }
                 let status: MemberStatus = (indexPath.row == 0 && myStatus == .available) ? .myself : .available
                 cell.reactor = MemberAvailabilityCellReactor(user: user, status: status)
                 return cell
             }
         )
-
+        
         let unavailableDataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, User>>(
             configureCell: { _, collectionView, indexPath, user in
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberAvailabilityCVC.identifier, for: indexPath) as! MemberAvailabilityCVC
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberAvailabilityCVC.identifier, for: indexPath) as? MemberAvailabilityCVC else {
+                    return UICollectionViewCell()
+                }
                 let status: MemberStatus = (indexPath.row == 0 && myStatus == .unavailable) ? .myself : .unavailable
                 cell.reactor = MemberAvailabilityCellReactor(user: user, status: status)
                 return cell
@@ -129,7 +133,7 @@ final class ScheduleConfirmedViewController: UIViewController, View {
                 self.rootView.scheduleInfoView.scheduleCategoryChip = ScheduleCategoryButton(category: schedule.schedule.category, buttonType: .ReadOnly)
                 self.rootView.scheduleInfoView.availableLabel.text = "가능한 친구 \(schedule.availableMembers.count)"
                 self.rootView.scheduleInfoView.unavailableLabel.text = "가능한 친구 \(schedule.unavailableMembers.count)"
-
+                
             })
             .disposed(by: disposeBag)
     }
@@ -139,7 +143,7 @@ final class ScheduleConfirmedViewController: UIViewController, View {
 extension ScheduleConfirmedViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let reactor = self.reactor else { return CGSize(width: 39, height: 30) }
-
+        
         let isAvailableCollection = (collectionView == rootView.scheduleInfoView.availableCollectionView)
         let myStatus = reactor.currentState.schedule.myInfo
         let isFirstCellMyself = (indexPath.row == 0) && ((isAvailableCollection && myStatus == .available) || (!isAvailableCollection && myStatus == .unavailable))

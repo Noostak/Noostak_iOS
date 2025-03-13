@@ -51,9 +51,9 @@ extension OverlayManager {
     func dismissPopup() {
         guard let popupWindow = popupWindow, let popupView = popupWindow.rootViewController?.view else { return }
         
-        UIView.animate(withDuration: 0.25, animations: {
+        UIView.animate(withDuration: 0.25) {
             popupView.alpha = 0
-        }) { _ in
+        } completion: { _ in
             popupWindow.isHidden = true
             self.popupWindow = nil
             self.currentPopup = nil
@@ -141,9 +141,9 @@ extension OverlayManager {
     
     /// 특정 토스트 뷰를 닫고, 다음 토스트 표시
     func dismissToast(_ toastView: UIView) {
-        UIView.animate(withDuration: 0.25, animations: {
+        UIView.animate(withDuration: 0.25) {
             toastView.alpha = 0
-        }) { _ in
+        } completion: { _ in
             toastView.removeFromSuperview()
             self.showNextToast()
         }
